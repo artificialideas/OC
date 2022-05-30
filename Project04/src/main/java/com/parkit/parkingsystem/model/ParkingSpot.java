@@ -42,7 +42,7 @@ public class ParkingSpot {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParkingSpot that = (ParkingSpot) o;
-        return number == that.number;
+        return this.number == that.number;
     }
 
     @Override
