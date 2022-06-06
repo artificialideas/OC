@@ -40,7 +40,7 @@ public class ParkingService {
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 // If current vehicle register number is not registered on our DB, process the current ticket
-                if (vehicleRegNumber != ticketDAO.getTicket(vehicleRegNumber).getVehicleRegNumber()) {
+                if (!Objects.equals(vehicleRegNumber, ticketDAO.getTicket(vehicleRegNumber).getVehicleRegNumber())) {
                     // ticket.setId(ticketID);
                     ticket.setParkingSpot(parkingSpot);
                     ticket.setVehicleRegNumber(vehicleRegNumber);
@@ -78,7 +78,7 @@ public class ParkingService {
                 throw new Exception("Error fetching parking number from DB. Parking slots might be full.");
             }
         } catch (IllegalArgumentException ie) {
-            logger.error("Error parsing user input for type of vehicl.e", ie);
+            logger.error("Error parsing user input for type of vehicle.", ie);
         } catch (Exception e) {
             logger.error("Error fetching next available parking slot.", e);
         }
