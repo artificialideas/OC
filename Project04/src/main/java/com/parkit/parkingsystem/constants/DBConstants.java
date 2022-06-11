@@ -22,6 +22,11 @@ public class DBConstants {
             "select t.PARKING_NUMBER, t.ID, t.PRICE, t.IN_TIME, t.OUT_TIME, p.TYPE " +
                 "from ticket t,parking p " +
                 "where p.parking_number = t.parking_number and t.VEHICLE_REG_NUMBER = ? " +
-                "order by t.IN_TIME " +
+                "order by t.IN_TIME DESC " +
+                "limit 1";
+    public static final String CHECK_VISITS =
+            "select 1 " +
+                "from ticket " +
+                "where VEHICLE_REG_NUMBER = ? " +
                 "limit 1";
 }
