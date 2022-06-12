@@ -30,7 +30,7 @@ public class TicketDAO {
             ps.setString(2, ticket.getVehicleRegNumber());
             ps.setDouble(3, ticket.getPrice());
             ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
-            ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );
+            ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())));
             return ps.execute();
         } catch (Exception ex) {
             logger.error("Error fetching next available slot.",ex);
@@ -87,7 +87,7 @@ public class TicketDAO {
         return false;
     }
 
-    public boolean checkVisits (String vehicleRegNumber) {
+    public boolean checkVisits(String vehicleRegNumber) {
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
