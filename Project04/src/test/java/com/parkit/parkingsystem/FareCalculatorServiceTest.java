@@ -127,5 +127,4 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals((Fare.CAR_RATE_PER_HOUR * 24) - (carFare * (60 - 30)), ticket.getPrice());
     }
-
 }

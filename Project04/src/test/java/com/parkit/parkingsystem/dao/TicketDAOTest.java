@@ -25,17 +25,16 @@ public class TicketDAOTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         ticket.setVehicleRegNumber("ABCDEF");
+        ticketDAO.saveTicket(ticket);
     }
 
     @Test
     public void givenTicket_whenSave_shouldReturnTrue() {
-        ticketDAO.saveTicket(ticket);
         assert(ticketDAO.checkVisits("ABCDEF"));
     }
 
     @Test
     public void givenTicket_whenUpdate_shouldReturnTrue() {
-        ticketDAO.saveTicket(ticket);
         assert(ticketDAO.updateTicket(ticketDAO.getTicket("ABCDEF")));
     }
 }

@@ -1,5 +1,6 @@
 D:\Eclipse_ws\OpenClassrooms\OC\Project04\src\test\java\com\parkit\parkingsystem\integration\config\DataBaseTestConfig.java
 D:\Eclipse_ws\OpenClassrooms\OC\Project04\src\test\java\com\parkit\parkingsystem\integration\service\DataBasePrepareService.java
+D:\Eclipse_ws\OpenClassrooms\OC\Project04\src\test\java\com\parkit\parkingsystem\dao\ParkingSpotDAOTest.java
 D:\Eclipse_ws\OpenClassrooms\OC\Project04\src\test\java\com\parkit\parkingsystem\integration\ParkingDataBaseIT.java
 D:\Eclipse_ws\OpenClassrooms\OC\Project04\src\test\java\com\parkit\parkingsystem\ParkingServiceTest.java
 D:\Eclipse_ws\OpenClassrooms\OC\Project04\src\test\java\com\parkit\parkingsystem\dao\TicketDAOTest.java
