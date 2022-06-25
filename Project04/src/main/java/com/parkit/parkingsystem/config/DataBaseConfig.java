@@ -3,7 +3,11 @@ package com.parkit.parkingsystem.config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
 
 public class DataBaseConfig {
 
@@ -12,8 +16,17 @@ public class DataBaseConfig {
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/prod","OCP4","rootrootRennes");
+        try (InputStream input = new FileInputStream("src/main/resources/config-properties/DataBase.properties")) {
+            Properties prop = new Properties();
+            // load the properties file
+            prop.load(input);
+
+            return DriverManager.getConnection(
+                    prop.getProperty("url"),prop.getProperty("user"),prop.getProperty("password"));
+        } catch (IOException ex) {
+            logger.error("Error with identifiants", ex);
+            return null;
+        }
     }
 
     public void closeConnection(Connection con) {

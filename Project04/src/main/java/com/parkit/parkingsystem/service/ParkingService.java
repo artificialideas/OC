@@ -43,7 +43,7 @@ public class ParkingService {
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
-                ticket.setOutTime(null);
+                //ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
 
                 if (ticketDAO.checkVisits(vehicleRegNumber)) {

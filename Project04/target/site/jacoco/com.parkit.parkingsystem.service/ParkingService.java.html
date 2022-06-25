@@ -30,7 +30,7 @@ public class ParkingService {
     public void processIncomingVehicle() {
         try {
 <span class="fc" id="L32">            ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();</span>
-<span class="pc bpc" id="L33" title="2 of 4 branches missed.">            if (parkingSpot != null &amp;&amp; parkingSpot.getId() &gt; 0) {</span>
+<span class="pc bpc" id="L33" title="1 of 4 branches missed.">            if (parkingSpot != null &amp;&amp; parkingSpot.getId() &gt; 0) {</span>
 <span class="fc" id="L34">                String vehicleRegNumber = getVehicleRegNumber();</span>
 <span class="fc" id="L35">                parkingSpot.setAvailable(false);</span>
 <span class="fc" id="L36">                parkingSpotDAO.updateParking(parkingSpot); // Allot this parking space and mark its availability as false</span>
@@ -41,14 +41,14 @@ public class ParkingService {
                 // ticket.setId(ticketID);
 <span class="fc" id="L42">                ticket.setParkingSpot(parkingSpot);</span>
 <span class="fc" id="L43">                ticket.setVehicleRegNumber(vehicleRegNumber);</span>
-<span class="fc" id="L44">                ticket.setPrice(0);</span>
+                //ticket.setPrice(0);
 <span class="fc" id="L45">                ticket.setInTime(inTime);</span>
-<span class="fc" id="L46">                ticket.setOutTime(null);</span>
+                //ticket.setOutTime(null);
 <span class="fc" id="L47">                ticketDAO.saveTicket(ticket);</span>
 
 <span class="pc bpc" id="L49" title="1 of 2 branches missed.">                if (ticketDAO.checkVisits(vehicleRegNumber)) {</span>
                     // It's a recurrent client
-<span class="fc" id="L51">                    System.out.println(&quot;It's nice to have you back!&quot;);</span>
+<span class="nc" id="L51">                    System.out.println(&quot;It's nice to have you back!&quot;);</span>
                 }
 <span class="fc" id="L53">                System.out.println(&quot;Please park your vehicle in spot number: &quot; + parkingSpot.getId());</span>
 <span class="fc" id="L54">                System.out.println(&quot;Recorded in-time for vehicle number: &quot; + vehicleRegNumber + &quot; is: &quot; + inTime);</span>
@@ -69,15 +69,15 @@ public class ParkingService {
         try {
 <span class="fc" id="L70">            ParkingType parkingType = getVehicleType();</span>
 <span class="fc" id="L71">            parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            if (parkingNumber &gt; 0) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (parkingNumber &gt; 0) {</span>
 <span class="fc" id="L73">                parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);</span>
             } else {
-<span class="nc" id="L75">                throw new Exception(&quot;Error fetching parking number from DB. Parking slots might be full.&quot;);</span>
+<span class="fc" id="L75">                throw new Exception(&quot;Error fetching parking number from DB. Parking slots might be full.&quot;);</span>
             }
 <span class="nc" id="L77">        } catch (IllegalArgumentException ie) {</span>
 <span class="nc" id="L78">            logger.error(&quot;Error parsing user input for type of vehicle.&quot;, ie);</span>
-<span class="nc" id="L79">        } catch (Exception e) {</span>
-<span class="nc" id="L80">            logger.error(&quot;Error fetching next available parking slot.&quot;, e);</span>
+<span class="fc" id="L79">        } catch (Exception e) {</span>
+<span class="fc" id="L80">            logger.error(&quot;Error fetching next available parking slot.&quot;, e);</span>
 <span class="pc" id="L81">        }</span>
 <span class="fc" id="L82">        return parkingSpot;</span>
     }

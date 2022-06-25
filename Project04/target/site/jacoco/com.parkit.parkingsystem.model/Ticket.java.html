@@ -19,11 +19,11 @@ import java.util.Date;
 <span class="fc" id="L19">    }</span>
 
     public ParkingSpot getParkingSpot() {
-<span class="fc" id="L22">        return parkingSpot;</span>
+<span class="fc" id="L22">        return new ParkingSpot(parkingSpot.getId(), parkingSpot.getParkingType(), parkingSpot.isAvailable());</span>
     }
 
     public void setParkingSpot(ParkingSpot parkingSpot) {
-<span class="fc" id="L26">        this.parkingSpot = parkingSpot;</span>
+<span class="fc" id="L26">        this.parkingSpot = new ParkingSpot(parkingSpot.getId(), parkingSpot.getParkingType(), parkingSpot.isAvailable());</span>
 <span class="fc" id="L27">    }</span>
 
     public String getVehicleRegNumber() {
@@ -43,19 +43,19 @@ import java.util.Date;
 <span class="fc" id="L43">    }</span>
 
     public Date getInTime() {
-<span class="fc" id="L46">        return inTime;</span>
+<span class="fc" id="L46">        return new Date(inTime.getTime());</span>
     }
 
     public void setInTime(Date inTime) {
-<span class="fc" id="L50">        this.inTime = inTime;</span>
+<span class="fc" id="L50">        this.inTime = new Date(inTime.getTime());</span>
 <span class="fc" id="L51">    }</span>
 
     public Date getOutTime() {
-<span class="fc" id="L54">        return outTime;</span>
+<span class="fc" id="L54">        return new Date(outTime.getTime());</span>
     }
 
     public void setOutTime(Date outTime) {
-<span class="fc" id="L58">        this.outTime = outTime;</span>
+<span class="fc" id="L58">        this.outTime = new Date(outTime.getTime());</span>
 <span class="fc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
