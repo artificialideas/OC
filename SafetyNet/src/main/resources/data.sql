@@ -61,8 +61,8 @@ CREATE TABLE medicalrecords (
   ,firstName     VARCHAR(20) NOT NULL
   ,lastName      VARCHAR(20) NOT NULL
   ,birthdate     DATE        NOT NULL
-  ,medications   VARCHAR(65535)
-  ,allergies     VARCHAR(65535)
+  ,medications   VARCHAR(255)
+  ,allergies     VARCHAR(255)
 );
 INSERT INTO medicalrecords (firstName,lastName,birthdate,medications,allergies) VALUES
     ('John','Boyd','03/06/1984','aznol:350mg, hydrapermazol:100mg', 'nillacilan'),
