@@ -1,19 +1,25 @@
 package com.openclassrooms.SafetyNet.model;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import javax.persistence.*;
 import java.util.List;
 
+@Data
+@Entity
+@Table(name = "medicalrecords")
 public class MedicalRecord {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String firstName;
     private String lastName;
     private String birthdate;
     private List<String> medications;
     private List<String> allergies;
 
-    public String getFirstName() {
+    /*public String getFirstName() {
         return firstName;
     }
     public void setFirstName(String firstName) {
@@ -30,7 +36,7 @@ public class MedicalRecord {
     public String getBirthdate() {
         return birthdate;
     }
-    public void setBirthdate(@NotNull LocalDate birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         this.birthdate = birthdate.format(formatter);
     }
@@ -47,5 +53,5 @@ public class MedicalRecord {
     }
     public void setAllergies(List<String> allergies) {
         this.allergies = allergies;
-    }
+    }*/
 }

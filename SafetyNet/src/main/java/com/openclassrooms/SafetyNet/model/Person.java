@@ -1,6 +1,21 @@
 package com.openclassrooms.SafetyNet.model;
 
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Data                       //Lombok annotation; it will create getters/setters
+@Entity                     //This class corresponds to a DB table
+@Table(name = "persons")    //Name of the associated table
 public class Person {
+    @Id                     //Primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String firstName;
     private String lastName;
     private String address;
@@ -9,7 +24,7 @@ public class Person {
     private String phone;
     private String email;
 
-    public String getFirstName() {
+    /*public String getFirstName() {
         return firstName;
     }
     public void setFirstName(String firstName) {
@@ -56,5 +71,5 @@ public class Person {
     }
     public void setEmail(String email) {
         this.email = email;
-    }
+    }*/
 }
