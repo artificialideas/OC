@@ -17,21 +17,21 @@ public class DataObjects {
     public static List<Person> getPersons() {
         return persons;
     }
-    public static void setPersons(List<Person> persons) {
+    public void setPersons(List<Person> persons) {
         DataObjects.persons = persons;
     }
 
     public static List<Firestation> getFirestations() {
         return firestations;
     }
-    public static void setFirestations(List<Firestation> firestations) {
+    public void setFirestations(List<Firestation> firestations) {
         DataObjects.firestations = firestations;
     }
 
     public static List<MedicalRecord> getMedicalRecords() {
         return medicalRecords;
     }
-    public static void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
         DataObjects.medicalRecords = medicalRecords;
     }
 }

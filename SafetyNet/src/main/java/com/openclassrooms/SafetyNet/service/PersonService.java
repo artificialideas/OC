@@ -1,22 +1,21 @@
 package com.openclassrooms.SafetyNet.service;
 
-import com.openclassrooms.SafetyNet.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.openclassrooms.SafetyNet.DAO.PersonDAO;
+import com.openclassrooms.SafetyNet.model.Person;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PersonService {
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonDAO personDAO = new PersonDAO();
 
-//    public Iterable<Person> list() {
-//        return personRepository.findAll();
-//    }
+    public Iterable<Person> list() {
+        return personDAO.getAllPersons();
+    }
 
-//    public Person read(String firstName, String lastName) {
-//        return personRepository.findByName(firstName, lastName);
-//    }
+    public Person search(String firstName, String lastName) {
+        return personDAO.getPersonByFullName(firstName, lastName);
+    }
 //
 //    public Person create(Person person) {
 //        return personRepository.create(person);
