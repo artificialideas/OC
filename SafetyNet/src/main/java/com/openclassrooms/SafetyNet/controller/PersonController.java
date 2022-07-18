@@ -1,9 +1,7 @@
 package com.openclassrooms.SafetyNet.controller;
 
-import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,26 +19,9 @@ public class PersonController {
      * READ - Get all people
      * @return - An Iterable object of Person with all its details
      */
-    @GetMapping("/")
-    public Iterable<Person> list() {
-        return personService.list();
-    }
-
-//    /**
-//     * READ - Get one person through its first and last names
-//     * @return - A response with the new person details
-//     */
-//    @GetMapping("/{firstName}-{lastName}")
-//    public ResponseEntity<Person> read(
-//        @RequestParam(value = "firstName", required = true) String firstName,
-//        @RequestParam(value = "lastName", required = true) String lastName) {
-//
-//        Person foundPerson = personService.read(firstName, lastName);
-//        if (foundPerson == null) {
-//            return ResponseEntity.notFound().build();
-//        } else {
-//            return ResponseEntity.ok(foundPerson);
-//        }
+//    @GetMapping("/")
+//    public Iterable<Person> list() {
+//        return personService.list();
 //    }
 //
 //    /**

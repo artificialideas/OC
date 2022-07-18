@@ -1,28 +1,22 @@
 package com.openclassrooms.SafetyNet.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-@Data                       //Lombok annotation; it will create getters/setters
+@Data
 public class Person {
-    //@JsonProperty("firstName")
+    @JsonProperty("firstName")
     private String firstName;
+    @JsonProperty("lastName")
     private String lastName;
+    @JsonProperty("address")
     private String address;
+    @JsonProperty("city")
     private String city;
+    @JsonProperty("zip")
     private String zip;
+    @JsonProperty("phone")
     private String phone;
+    @JsonProperty("email")
     private String email;
-
-    @Override
-    public String toString() {
-        return '{' +
-                    "firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    ", address=" + address + '\'' +
-                    ", city='" + city + '\'' +
-                    ", zip='" + zip + '\'' +
-                    ", phone='" + phone + '\'' +
-                    ", email='" + email + '\'' +
-                '}';
-    }
 }
