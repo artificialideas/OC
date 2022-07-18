@@ -1,22 +1,23 @@
 package com.openclassrooms.SafetyNet.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
-    @JsonProperty("firstName")
+    //@JsonProperty("firstName")
     private String firstName;
-    @JsonProperty("lastName")
+    //@JsonProperty("lastName")
     private String lastName;
-    @JsonProperty("address")
+    //@JsonProperty("address")
     private String address;
-    @JsonProperty("city")
+    //@JsonProperty("city")
     private String city;
-    @JsonProperty("zip")
+    //@JsonProperty("zip")
     private String zip;
-    @JsonProperty("phone")
+   //@JsonProperty("phone")
     private String phone;
-    @JsonProperty("email")
+    //@JsonProperty("email")
     private String email;
 }

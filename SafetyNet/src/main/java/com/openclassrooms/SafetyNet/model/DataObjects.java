@@ -1,16 +1,37 @@
 package com.openclassrooms.SafetyNet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
 import java.util.List;
 
-@Data                       //Lombok annotation; it will create getters/setters
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DataObjects {
     @JsonProperty("persons")
-    private List<Person> persons;
+    public static List<Person> persons;
     @JsonProperty("firestations")
-    private List<Firestation> firestations;
+    public static List<Firestation> firestations;
     @JsonProperty("medicalrecords")
-    private List<MedicalRecord> medicalRecords;
+    public static List<MedicalRecord> medicalRecords;
+
+    public static List<Person> getPersons() {
+        return persons;
+    }
+    public static void setPersons(List<Person> persons) {
+        DataObjects.persons = persons;
+    }
+
+    public static List<Firestation> getFirestations() {
+        return firestations;
+    }
+    public static void setFirestations(List<Firestation> firestations) {
+        DataObjects.firestations = firestations;
+    }
+
+    public static List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+    public static void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        DataObjects.medicalRecords = medicalRecords;
+    }
 }
