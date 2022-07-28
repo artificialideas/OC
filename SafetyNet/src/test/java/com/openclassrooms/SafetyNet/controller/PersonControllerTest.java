@@ -19,8 +19,7 @@ import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -40,16 +39,6 @@ public class PersonControllerTest {
         DataObjects dataObject = objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
 
         personService = new PersonService();
-
-        // Mock resource
-        person = new Person();
-        person.setFirstName("Grace");
-        person.setLastName("Hopper");
-        person.setAddress("951 LoneTree Rd");
-        person.setCity("Culver");
-        person.setZip(97451);
-        person.setPhone("841-874-7458");
-        person.setEmail("gracehopper@mail.com");
     }
 
     @Test
@@ -65,11 +54,41 @@ public class PersonControllerTest {
     @Test
     @DisplayName("POST - returns a new added Person resource //create()")
     public void givenNewPerson_whenFirstAndLastName_shouldReturnPersonResource() throws Exception {
+        // Mock resource
+        person = new Person();
+        person.setFirstName("Grace");
+        person.setLastName("Hopper");
+        person.setAddress("951 LoneTree Rd");
+        person.setCity("Culver");
+        person.setZip(97451);
+        person.setPhone("841-874-7458");
+        person.setEmail("gracehopper@mail.com");
         personService.create(person);
 
         MvcResult result = mockMvc.perform( post("/person/")
                                             .contentType(MediaType.APPLICATION_JSON)
                                             .content(objectMapper.writeValueAsString(person)))
+                                    .andExpect(jsonPath("$.firstName", is("Grace")))
+                                    .andExpect(status().is2xxSuccessful())
+                                    .andReturn();
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("PUT - returns a boolean response after updating values of an existant Person resource //update()")
+    public void givenExistantPerson_whenAddressChanges_shouldReturnTrue() throws Exception {
+        final String FIRST_NAME = "Felicia";
+        final String LAST_NAME = "Boyd";
+
+//        person = new Person();
+//        person.setAddress("29 15th St");
+        personService.update(FIRST_NAME, LAST_NAME, person);
+
+        MvcResult result = mockMvc.perform( put("/person/" + FIRST_NAME + '-' + LAST_NAME)
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(objectMapper.writeValueAsString(person)))
+                                    .andExpect(jsonPath("$.[5].firstName", is("Felicia")))
+                                    //.andExpect(jsonPath("$.[5].address", is("29 15th St")))
                                     .andExpect(status().is2xxSuccessful())
                                     .andReturn();
         assertNotNull(result);

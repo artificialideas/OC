@@ -5,9 +5,7 @@ import com.openclassrooms.SafetyNet.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController     //It will insert the response's return using JSON format inside the HTTP's body
@@ -30,20 +28,9 @@ public class PersonController {
      * @return - A response with all the people and the new person
      */
     @PostMapping("/")
-    public ResponseEntity<Person> create(
+    public Person create(
             @RequestBody Person person) throws URISyntaxException {
-
-        Person createdPerson = personService.create(person);
-        if (createdPerson == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{firstName}-{lastName}")
-                    .buildAndExpand(createdPerson.getFirstName() + '-' + createdPerson.getLastName())
-                    .toUri();
-
-            return ResponseEntity.created(uri).body(createdPerson);
-        }
+        return personService.create(person);
     }
 //
     /**
@@ -51,17 +38,12 @@ public class PersonController {
      * @return - A response with the updated person details
      */
     @PutMapping("/{firstName}-{lastName}")
-    public ResponseEntity<Boolean> update(
+    public ResponseEntity<Person> update(
             @PathVariable(value = "firstName", required = true) String firstName,
             @PathVariable(value = "lastName", required = true) String lastName,
             @RequestBody Person personDetails) {
-
-        boolean updatedPerson = personService.update(firstName, lastName);
-        if (updatedPerson) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(false);
-        }
+        Person updatedPerson = personService.update(firstName, lastName, personDetails);
+        return ResponseEntity.ok(updatedPerson);
     }
 
     /**

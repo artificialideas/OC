@@ -13,14 +13,14 @@ import java.util.Objects;
 public class PersonDAO {
     private static final Logger logger = LogManager.getLogger("PersonDAO");
 
-//    public Person getPersonByFullName(String first, String last) {
-//        for (Person person: DataObjects.getPersons()) {
-//            if ((Objects.equals(person.getFirstName(), first)) && (Objects.equals(person.getLastName(), last))) {
-//                return person;
-//            }
-//        }
-//        return null;
-//    }
+    public Person getPersonByFullName(String first, String last) {
+        for (Person person: DataObjects.getPersons()) {
+            if ((Objects.equals(person.getFirstName(), first)) && (Objects.equals(person.getLastName(), last))) {
+                return person;
+            }
+        }
+        return null;
+    }
 
     public List<Person> getPersons() {
         return DataObjects.persons;
@@ -39,16 +39,24 @@ public class PersonDAO {
         return savedPerson;
     }
 
-    public boolean update(String first, String last) {
-        for (Person person: DataObjects.getPersons()) {
-            if ((Objects.equals(person.getFirstName(), first)) &&
-                    (Objects.equals(person.getLastName(),last))) {
-                return true;
-            } else {
-                logger.error("Error saving new Person");
-            }
+    public Person update(String first, String last, Person personDetails) {
+        Person updatedPerson = this.getPersonByFullName(first,last);
+
+        if ((updatedPerson != null) && (personDetails != null)) {
+            if (personDetails.getFirstName() != null) updatedPerson.setFirstName(personDetails.getFirstName());
+            if (personDetails.getLastName() != null) updatedPerson.setLastName(personDetails.getLastName());
+            if (personDetails.getAddress() != null) updatedPerson.setAddress(personDetails.getAddress());
+            if (personDetails.getCity() != null) updatedPerson.setCity(personDetails.getCity());
+            if (personDetails.getZip() != 0) updatedPerson.setZip(personDetails.getZip());
+            if (personDetails.getPhone() != null) updatedPerson.setPhone(personDetails.getPhone());
+            if (personDetails.getEmail() != null) updatedPerson.setEmail(personDetails.getEmail());
+
+            this.save(updatedPerson);
+            return updatedPerson;
+        } else {
+            logger.error("Error saving new Person");
+            return null;
         }
-        return false;
     }
 
     public void delete(String first, String last) {
