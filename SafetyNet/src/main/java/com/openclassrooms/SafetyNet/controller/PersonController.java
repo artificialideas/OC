@@ -3,10 +3,11 @@ package com.openclassrooms.SafetyNet.controller;
 import com.openclassrooms.SafetyNet.model.Person;
 import com.openclassrooms.SafetyNet.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
+import java.util.Objects;
 
 @RestController     //It will insert the response's return using JSON format inside the HTTP's body
 @RequestMapping("/person")
@@ -28,11 +29,16 @@ public class PersonController {
      * @return - A response with all the people and the new person
      */
     @PostMapping("/")
-    public Person create(
-            @RequestBody Person person) throws URISyntaxException {
-        return personService.create(person);
+    public ResponseEntity<Person> create(
+            @RequestBody Person newPerson) {
+        Person person = personService.create(newPerson);
+        if (Objects.isNull(person)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return new ResponseEntity<>(person, HttpStatus.CREATED);
+        }
     }
-//
+
     /**
      * UPDATE - Modify an existing Person resource
      * @return - A response with the updated person details

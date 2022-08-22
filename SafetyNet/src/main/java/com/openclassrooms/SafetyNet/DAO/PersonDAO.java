@@ -43,7 +43,7 @@ public class PersonDAO {
         Person updatedPerson = this.getPersonByFullName(first,last);
 
         if ((updatedPerson != null) && (personDetails != null)) {
-            if (personDetails.getFirstName() != null) updatedPerson.setFirstName(personDetails.getFirstName());
+            if (personDetails.getFirstName() != null) updatedPerson.setFirstName(personDetails.getFirstName()); //Is this necessary?
             if (personDetails.getLastName() != null) updatedPerson.setLastName(personDetails.getLastName());
             if (personDetails.getAddress() != null) updatedPerson.setAddress(personDetails.getAddress());
             if (personDetails.getCity() != null) updatedPerson.setCity(personDetails.getCity());
@@ -51,7 +51,6 @@ public class PersonDAO {
             if (personDetails.getPhone() != null) updatedPerson.setPhone(personDetails.getPhone());
             if (personDetails.getEmail() != null) updatedPerson.setEmail(personDetails.getEmail());
 
-//            this.save(updatedPerson);
             return updatedPerson;
         } else {
             logger.error("Error saving new Person");
