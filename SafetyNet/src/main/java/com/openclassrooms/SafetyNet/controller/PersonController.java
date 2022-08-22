@@ -57,7 +57,7 @@ public class PersonController {
      * @return - A response with all the people without the deleted person
      */
     @DeleteMapping("/{firstName}-{lastName}")
-    public ResponseEntity<Object> delete(
+    public ResponseEntity<Person> delete(
             @PathVariable(value = "firstName", required = true) String firstName,
             @PathVariable(value = "lastName", required = true) String lastName) {
         personService.delete(firstName, lastName);

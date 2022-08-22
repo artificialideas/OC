@@ -58,8 +58,16 @@ public class PersonDAO {
         }
     }
 
-    public void delete(String first, String last) {
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
+    public Map<String, Boolean> delete(String first, String last) {
+        Person deletedPerson = this.getPersonByFullName(first,last);
+
+        if (deletedPerson != null) {
+            Map<String, Boolean> response = new HashMap<>();
+            response.put("deleted", Boolean.TRUE);
+            return response;
+        } else {
+            logger.error(first + ' ' + last + " does not exist in our list.");
+            return null;
+        }
     }
 }
