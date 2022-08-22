@@ -51,7 +51,7 @@ public class PersonDAO {
             if (personDetails.getPhone() != null) updatedPerson.setPhone(personDetails.getPhone());
             if (personDetails.getEmail() != null) updatedPerson.setEmail(personDetails.getEmail());
 
-            this.save(updatedPerson);
+//            this.save(updatedPerson);
             return updatedPerson;
         } else {
             logger.error("Error saving new Person");

@@ -80,17 +80,15 @@ public class PersonControllerTest {
         final String FIRST_NAME = "Felicia";
         final String LAST_NAME = "Boyd";
 
-//        person = new Person();
-//        person.setAddress("29 15th St");
+        person = new Person();
+        person.setAddress("29 15th St");
         personService.update(FIRST_NAME, LAST_NAME, person);
 
-        MvcResult result = mockMvc.perform( put("/person/" + FIRST_NAME + '-' + LAST_NAME)
-                                            .contentType(MediaType.APPLICATION_JSON)
-                                            .content(objectMapper.writeValueAsString(person)))
-                                    .andExpect(jsonPath("$.[5].firstName", is("Felicia")))
-                                    //.andExpect(jsonPath("$.[5].address", is("29 15th St")))
-                                    .andExpect(status().is2xxSuccessful())
-                                    .andReturn();
-        assertNotNull(result);
+        mockMvc.perform( put("/person/" + FIRST_NAME + '-' + LAST_NAME)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(person)))
+                .andExpect(jsonPath("$.firstName", is("Felicia")))
+                .andExpect(jsonPath("$.address", is("29 15th St")))
+                .andExpect(status().is2xxSuccessful());
     }
 }
