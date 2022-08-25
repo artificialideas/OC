@@ -52,7 +52,7 @@ public class PersonDAO {
 
             return updatedPerson;
         } else {
-            logger.error("Error saving new Person");
+            logger.error("Error updating new Person.");
             return null;
         }
     }

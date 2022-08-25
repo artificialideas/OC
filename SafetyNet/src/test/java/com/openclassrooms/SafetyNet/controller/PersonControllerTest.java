@@ -53,7 +53,7 @@ public class PersonControllerTest {
 
     @Test
     @DisplayName("POST - returns a new added Person resource //create()")
-    public void givenNewPerson_whenFirstAndLastName_shouldReturnPersonResource() throws Exception {
+    public void givenNewPerson_whenFirstANDLastName_shouldReturnPersonResource() throws Exception {
         // Mock resource
         person = new Person();
         person.setFirstName("Grace");
@@ -94,7 +94,7 @@ public class PersonControllerTest {
 
     @Test
     @DisplayName("DELETE - returns a boolean with the result of the delete demand //delete()")
-    public  void givenExistantPerson_whenDeleteWithFirstAndLastName_shouldReturnTrue() throws Exception {
+    public  void givenExistantPerson_whenDeleteWithFirstANDLastName_shouldReturnTrue() throws Exception {
         final String FIRST_NAME = "Felicia";
         final String LAST_NAME = "Boyd";
 

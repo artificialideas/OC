@@ -16,7 +16,7 @@ public class PersonController {
     private PersonService personService;
 
     /**
-     * READ - Get all Person resources
+     * READ - Get Person collection
      * @return - An Iterable object of Person with all its details
      */
     @GetMapping("/")
@@ -54,7 +54,7 @@ public class PersonController {
 
     /**
      * DELETE - Delete an existing Person resource
-     * @return - A response with all the people without the deleted person
+     * @return - A boolean response with de delete result (true or false)
      */
     @DeleteMapping("/{firstName}-{lastName}")
     public Boolean delete(
