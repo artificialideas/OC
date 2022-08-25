@@ -12,26 +12,26 @@ public class DataObjects {
     @JsonProperty("firestations")
     public static List<Firestation> firestations;
     @JsonProperty("medicalrecords")
-    public static List<MedicalRecord> medicalRecords;
+    public static List<MedicalRecord> medicalrecords;
 
     public static List<Person> getPersons() {
         return persons;
     }
-    public void setPersons(List<Person> persons) {
+    public static void setPersons(List<Person> persons) {
         DataObjects.persons = persons;
     }
 
     public static List<Firestation> getFirestations() {
         return firestations;
     }
-    public void setFirestations(List<Firestation> firestations) {
+    public static void setFirestations(List<Firestation> firestations) {
         DataObjects.firestations = firestations;
     }
 
     public static List<MedicalRecord> getMedicalRecords() {
-        return medicalRecords;
+        return medicalrecords;
     }
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        DataObjects.medicalRecords = medicalRecords;
+    public static void setMedicalRecords(List<MedicalRecord> medicalrecords) {
+        DataObjects.medicalrecords = medicalrecords;
     }
 }

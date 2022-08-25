@@ -11,7 +11,7 @@ public class JsonReader {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
-            DataObjects dataObject = objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
+            objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
         } catch(IOException ex) {
             System.out.println("Error when reading the JSON file. " + ex);
         }

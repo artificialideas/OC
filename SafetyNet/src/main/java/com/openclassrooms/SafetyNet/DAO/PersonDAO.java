@@ -4,7 +4,6 @@ import com.openclassrooms.SafetyNet.model.DataObjects;
 import com.openclassrooms.SafetyNet.model.Person;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +61,6 @@ public class PersonDAO {
 
         if (deletedPerson != null) {
             DataObjects.getPersons().remove(deletedPerson);
-            ResponseEntity.ok(deletedPerson);
             return true;
         } else {
             logger.error(first + ' ' + last + " does not exist in our list.");

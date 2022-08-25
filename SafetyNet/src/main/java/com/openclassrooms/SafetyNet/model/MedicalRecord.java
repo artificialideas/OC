@@ -23,4 +23,6 @@ public class MedicalRecord {
 
     @JsonProperty("allergies")
     private List<String> allergies;
+
+    public MedicalRecord() {}
 }

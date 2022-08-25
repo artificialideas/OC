@@ -4,7 +4,6 @@ import com.openclassrooms.SafetyNet.model.DataObjects;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +51,6 @@ public class FirestationDAO {
 
         if (deletedFirestation != null) {
             DataObjects.getFirestations().remove(deletedFirestation);
-            ResponseEntity.ok(deletedFirestation);
             return true;
         } else {
             logger.error(station + " does not exist in our list.");
