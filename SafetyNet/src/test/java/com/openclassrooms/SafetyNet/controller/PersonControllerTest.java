@@ -36,7 +36,7 @@ public class PersonControllerTest {
 
     @BeforeEach
     public void setup() throws IOException {
-        DataObjects dataObject = objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
+        objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
 
         personService = new PersonService();
     }
@@ -63,7 +63,7 @@ public class PersonControllerTest {
         person.setZip(97451);
         person.setPhone("841-874-7458");
         person.setEmail("gracehopper@mail.com");
-        personService.create(person);
+        //personService.create(person);
 
         MvcResult result = mockMvc.perform( post("/person/")
                                             .contentType(MediaType.APPLICATION_JSON)
@@ -75,7 +75,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    @DisplayName("PUT - returns a boolean response after updating values of an existant Person resource //update()")
+    @DisplayName("PUT - returns the updated details of an existant Person resource //update()")
     public void givenExistantPerson_whenAddressChanges_shouldReturnTrue() throws Exception {
         final String FIRST_NAME = "Felicia";
         final String LAST_NAME = "Boyd";
@@ -89,6 +89,19 @@ public class PersonControllerTest {
                         .content(objectMapper.writeValueAsString(person)))
                 .andExpect(jsonPath("$.firstName", is("Felicia")))
                 .andExpect(jsonPath("$.address", is("29 15th St")))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    @DisplayName("DELETE - returns a boolean with the result of the delete demand //delete()")
+    public  void givenExistantPerson_whenDeleteWithFirstAndLastName_shouldReturnTrue() throws Exception {
+        final String FIRST_NAME = "Felicia";
+        final String LAST_NAME = "Boyd";
+
+        personService.delete(FIRST_NAME, LAST_NAME);
+
+        mockMvc.perform( delete("/person/" + FIRST_NAME + '-' + LAST_NAME)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
 }

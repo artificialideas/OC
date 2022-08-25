@@ -26,8 +26,8 @@ public class PersonService {
         return personDAO.update(firstName, lastName, personDetails);
     }
 
-    public void delete(String firstName, String lastName) {
-        personDAO.delete(firstName, lastName);
+    public Boolean delete(String firstName, String lastName) {
+        return personDAO.delete(firstName, lastName);
     }
 
 }

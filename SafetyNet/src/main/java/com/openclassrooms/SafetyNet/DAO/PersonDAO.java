@@ -4,10 +4,9 @@ import com.openclassrooms.SafetyNet.model.DataObjects;
 import com.openclassrooms.SafetyNet.model.Person;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class PersonDAO {
@@ -43,8 +42,8 @@ public class PersonDAO {
         Person updatedPerson = this.getPersonByFullName(first,last);
 
         if ((updatedPerson != null) && (personDetails != null)) {
-            if (personDetails.getFirstName() != null) updatedPerson.setFirstName(personDetails.getFirstName()); //Is this necessary?
-            if (personDetails.getLastName() != null) updatedPerson.setLastName(personDetails.getLastName());
+            //if (personDetails.getFirstName() != null) updatedPerson.setFirstName(personDetails.getFirstName());
+            //if (personDetails.getLastName() != null) updatedPerson.setLastName(personDetails.getLastName());
             if (personDetails.getAddress() != null) updatedPerson.setAddress(personDetails.getAddress());
             if (personDetails.getCity() != null) updatedPerson.setCity(personDetails.getCity());
             if (personDetails.getZip() != 0) updatedPerson.setZip(personDetails.getZip());
@@ -58,16 +57,16 @@ public class PersonDAO {
         }
     }
 
-    public Map<String, Boolean> delete(String first, String last) {
+    public Boolean delete(String first, String last) {
         Person deletedPerson = this.getPersonByFullName(first,last);
 
         if (deletedPerson != null) {
-            Map<String, Boolean> response = new HashMap<>();
-            response.put("deleted", Boolean.TRUE);
-            return response;
+            DataObjects.getPersons().remove(deletedPerson);
+            ResponseEntity.ok(deletedPerson);
+            return true;
         } else {
             logger.error(first + ' ' + last + " does not exist in our list.");
-            return null;
+            return false;
         }
     }
 }
