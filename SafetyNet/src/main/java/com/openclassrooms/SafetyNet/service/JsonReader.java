@@ -15,5 +15,8 @@ public class JsonReader {
         } catch(IOException ex) {
             System.out.println("Error when reading the JSON file. " + ex);
         }
+        System.out.println("persons: " + DataObjects.getPersons());
+        System.out.println("firestations: " + DataObjects.getFirestations());
+        System.out.println("medical records: " + DataObjects.getMedicalRecords());
     }
 }

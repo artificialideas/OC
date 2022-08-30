@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import javax.persistence.ElementCollection;
 import java.util.List;
 
 @Data
@@ -19,10 +20,20 @@ public class MedicalRecord {
     private String birthdate;
 
     @JsonProperty("medications")
+    @ElementCollection
     private List<String> medications;
 
     @JsonProperty("allergies")
+    @ElementCollection
     private List<String> allergies;
 
     public MedicalRecord() {}
+
+    public MedicalRecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+        this.medications = medications;
+        this.allergies = allergies;
+    }
 }
