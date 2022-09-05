@@ -25,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PersonControllerTest {
+    final String FIRST_NAME = "Felicia";
+    final String LAST_NAME = "Boyd";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -76,10 +79,7 @@ public class PersonControllerTest {
 
     @Test
     @DisplayName("PUT - returns the updated details of an existant Person resource //update()")
-    public void givenExistantPerson_whenAddressChanges_shouldReturnTrue() throws Exception {
-        final String FIRST_NAME = "Felicia";
-        final String LAST_NAME = "Boyd";
-
+    public void givenExistantPerson_whenAddressChanges_shouldReturnPersonDetail() throws Exception {
         person = new Person();
         person.setAddress("29 15th St");
         personService.update(FIRST_NAME, LAST_NAME, person);
@@ -95,9 +95,6 @@ public class PersonControllerTest {
     @Test
     @DisplayName("DELETE - returns a boolean with the result of the delete demand //delete()")
     public  void givenExistantPerson_whenDeleteWithFirstANDLastName_shouldReturnTrue() throws Exception {
-        final String FIRST_NAME = "Felicia";
-        final String LAST_NAME = "Boyd";
-
         personService.delete(FIRST_NAME, LAST_NAME);
 
         mockMvc.perform( delete("/person/" + FIRST_NAME + '-' + LAST_NAME)

@@ -13,7 +13,7 @@ public class FirestationDAO {
 
     public Firestation getFirestationByStation(int station, String address) {
         for (Firestation firestation: DataObjects.getFirestations()) {
-            if ((Objects.equals(firestation.getStation(), station)) || (Objects.equals(firestation.getAddress(), address))) {
+            if ((Objects.equals(firestation.getStation(), station)) && (Objects.equals(firestation.getAddress(), address))) {
                 return firestation;
             }
         }
