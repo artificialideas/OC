@@ -1,5 +1,4 @@
-package com.openclassrooms.SafetyNet.DAO;
-
+package com.openclassrooms.SafetyNet.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.model.DataObjects;
@@ -15,12 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class FirestationDAOTest {
+class FirestationServiceTest {
     final int STATION = 2;
     final String ADDRESS = "29 15th St";
 
@@ -31,30 +29,26 @@ public class FirestationDAOTest {
     private ObjectMapper objectMapper;
 
     private Firestation firestation;
-    private static FirestationDAO firestationDAO;
+    private FirestationService firestationService;
 
     @BeforeEach
     public void setup() throws IOException {
         objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
 
-        firestationDAO = new FirestationDAO();
+        firestationService = new FirestationService();
     }
 
     @Test
-    @DisplayName("returns null for non existant Firestation //getFirestationByStation()")
-    public void givenNonExistentFirestation_whenGetFirestation_shouldReturnNull() {
-        assertNull(firestationDAO.getFirestationByStation(1, ADDRESS));
-    }
+    @DisplayName(" returns Firestation resource if existant //search()")
+    public void givenExistantFirestation_whenKnownStationANDAddress_shouldReturnFirestation() {
+        // Existant mock resource
+        firestation = new Firestation();
+        firestation.setAddress("29 15th St");
+        firestation.setStation(2);
 
-    @Test
-    @DisplayName("returns null for non existant Person //update()")
-    public void givenNonExistantPerson_whenUpdate_shouldReturnNull() {
-        assertNull(firestationDAO.update(STATION, ADDRESS, null));
-    }
+        Firestation expected = firestation;
+        Firestation actual = firestationService.search(STATION, ADDRESS);
 
-    @Test
-    @DisplayName("returns false for non existant Person //delete()")
-    public void givenNonExistantPerson_whenDelete_shouldReturnFalse() {
-        assertFalse(firestationDAO.delete(STATION, "112 Steppes Pl"));
+        assertEquals(expected, actual);
     }
 }

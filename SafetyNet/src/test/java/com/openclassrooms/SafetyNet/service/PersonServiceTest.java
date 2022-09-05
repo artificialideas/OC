@@ -1,7 +1,6 @@
 package com.openclassrooms.SafetyNet.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openclassrooms.SafetyNet.DAO.PersonDAO;
 import com.openclassrooms.SafetyNet.model.DataObjects;
 import com.openclassrooms.SafetyNet.model.Person;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +30,6 @@ class PersonServiceTest {
     private ObjectMapper objectMapper;
 
     private Person person;
-    private static PersonDAO personDAO;
     private PersonService personService;
 
     @BeforeEach

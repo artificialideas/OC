@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -70,14 +72,25 @@ public class FirestationControllerTest {
                                     .andReturn();
         assertNotNull(result);
     }
+    @Test
+    @DisplayName("POST - returns null when missing data on create() //create()")
+    public void givenNewFirestation_whenMissingAddress_shouldReturnNull() throws Exception {
+        firestation = new Firestation();
+        firestation.setStation(4);
+
+        ResponseEntity<Firestation> responseEntity = ResponseEntity.status(201).body(firestation);
+        assertEquals(201, responseEntity.getStatusCodeValue());
+        assertEquals(firestation, responseEntity.getBody());
+    }
 
     @Test
     @DisplayName("PUT - returns the updated details of an existant Firestation resource //update()")
-    public void givenExistantFirestation_whenStationORAddressChanges_shouldReturnTrue() throws Exception {
+    public void givenExistantFirestation_whenStationORAddressChanges_shouldReturnFirestation() throws Exception {
         final int STATION = 4;
         final String ADDRESS = "112 Steppes Pl";
 
         firestation = new Firestation();
+        firestation.setStation(STATION);
         firestation.setAddress("60 ThunderBolt St");
         firestationService.update(STATION, ADDRESS, firestation);
 
