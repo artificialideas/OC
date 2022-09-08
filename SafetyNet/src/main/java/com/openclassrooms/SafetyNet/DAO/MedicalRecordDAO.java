@@ -13,7 +13,7 @@ public class MedicalRecordDAO {
     private static final Logger logger = LogManager.getLogger("MedicalRecordDAO");
 
     public MedicalRecord getMedicalRecordByFullName(String first, String last) {
-        for (MedicalRecord medicalRecord: DataObjects.getMedicalRecords()) {
+        for (MedicalRecord medicalRecord: DataObjects.getMedicalrecords()) {
             if ((Objects.equals(medicalRecord.getFirstName(), first)) && (Objects.equals(medicalRecord.getLastName(), last))) {
                 return medicalRecord;
             }
@@ -65,7 +65,7 @@ public class MedicalRecordDAO {
         MedicalRecord deletedMedicalRecord = this.getMedicalRecordByFullName(first,last);
 
         if (deletedMedicalRecord != null) {
-            DataObjects.getMedicalRecords().remove(deletedMedicalRecord);
+            DataObjects.getMedicalrecords().remove(deletedMedicalRecord);
             return true;
         } else {
             logger.error(first + ' ' + last + " does not exist in our list.");

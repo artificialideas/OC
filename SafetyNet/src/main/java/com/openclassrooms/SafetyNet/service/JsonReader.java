@@ -17,6 +17,6 @@ public class JsonReader {
         }
         System.out.println("persons: " + DataObjects.getPersons());
         System.out.println("firestations: " + DataObjects.getFirestations());
-        System.out.println("medical records: " + DataObjects.getMedicalRecords());
+        System.out.println("medical records: " + DataObjects.getMedicalrecords());
     }
 }

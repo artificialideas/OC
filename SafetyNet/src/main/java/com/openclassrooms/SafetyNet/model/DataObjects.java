@@ -3,7 +3,6 @@ package com.openclassrooms.SafetyNet.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,7 +12,7 @@ public class DataObjects {
     @JsonProperty("firestations")
     public static List<Firestation> firestations;
     @JsonProperty("medicalrecords")
-    public static List<MedicalRecord> medicalrecords = new ArrayList<MedicalRecord>();
+    public static List<MedicalRecord> medicalrecords;
 
     public static List<Person> getPersons() {
         return persons;
@@ -29,10 +28,10 @@ public class DataObjects {
         DataObjects.firestations = firestations;
     }
 
-    public static List<MedicalRecord> getMedicalRecords() {
+    public static List<MedicalRecord> getMedicalrecords() {
         return medicalrecords;
     }
-    public void setMedicalRecords(List<MedicalRecord> medicalrecords) {
+    public void setMedicalrecords(List<MedicalRecord> medicalrecords) {
         DataObjects.medicalrecords = medicalrecords;
     }
 }
