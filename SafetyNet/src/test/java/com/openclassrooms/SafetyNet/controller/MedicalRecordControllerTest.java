@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.model.DataObjects;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.service.MedicalRecordService;
-import org.hamcrest.core.IsNull;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MedicalRecordControllerTest {
+    final String FIRST_NAME = "Jacob";
+    final String LAST_NAME = "Boyd";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -52,9 +55,9 @@ public class MedicalRecordControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[0].firstName", is("John")));
-                //.andExpect(jsonPath("$.[0].medications", Matchers.hasSize(2)));
-                //.andExpect(jsonPath("$.[0].medications", Matchers.containsInAnyOrder("aznol:350mg", "hydrapermazol:100mg")));
+                .andExpect(jsonPath("$.[0].firstName", is("John")))
+                .andExpect(jsonPath("$.[0].medications", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$.[0].medications", Matchers.containsInAnyOrder("aznol:350mg", "hydrapermazol:100mg")));
     }
 
     @Test
@@ -84,9 +87,6 @@ public class MedicalRecordControllerTest {
     @Test
     @DisplayName("PUT - returns the updated details of an existant MedicalRecord resource //update()")
     public void givenExistantMedicalRecord_whenMedicationChanges_shouldReturnTrue() throws Exception {
-        final String FIRST_NAME = "Jacob";
-        final String LAST_NAME = "Boyd";
-
         medicalRecord = new MedicalRecord();
         medicalRecord.setMedications(Collections.emptyList());
         medicalRecordService.update(FIRST_NAME, LAST_NAME, medicalRecord);
@@ -95,16 +95,13 @@ public class MedicalRecordControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(medicalRecord)))
                 .andExpect(jsonPath("$.firstName", is("Jacob")))
-                .andExpect(jsonPath("$.medications").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$.medications", Matchers.hasSize(0)))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     @DisplayName("DELETE - returns a boolean with the result of the delete demand //delete()")
     public  void givenExistantMedicalRecord_whenDeleteWithFirstANDLastName_shouldReturnTrue() throws Exception {
-        final String FIRST_NAME = "Jacob";
-        final String LAST_NAME = "Boyd";
-
         medicalRecordService.delete(FIRST_NAME, LAST_NAME);
 
         mockMvc.perform( delete("/medicalRecord/" + FIRST_NAME + '-' + LAST_NAME)

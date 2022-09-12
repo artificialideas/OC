@@ -1,5 +1,4 @@
-package com.openclassrooms.SafetyNet.DAO;
-
+package com.openclassrooms.SafetyNet.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.model.DataObjects;
@@ -15,14 +14,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MedicalRecordDAOTest {
+class MedicalRecordServiceTest {
     final String FIRST_NAME = "Eric";
     final String LAST_NAME = "Cadigan";
 
@@ -33,43 +32,32 @@ public class MedicalRecordDAOTest {
     private ObjectMapper objectMapper;
 
     private MedicalRecord medicalRecord;
-    private static MedicalRecordDAO medicalRecordDAO;
+    private MedicalRecordService medicalRecordService;
 
     @BeforeEach
     public void setup() throws IOException {
         objectMapper.readValue(new File("resources/data.json"), DataObjects.class);
 
-        medicalRecordDAO = new MedicalRecordDAO();
+        medicalRecordService = new MedicalRecordService();
     }
 
     @Test
-    @DisplayName("returns the updated details of an existant Medical Record resource //update()")
-    public void givenExistantMedicalRecord_whenAddAllergy_shouldReturnUpdatedMedicalRecordResource() {
-        // Mock resource
+    @DisplayName(" returns Medical Record resource if existant //search()")
+    public void givenExistantMedicalRecord_whenKnownFirstANDLastName_shouldReturnMedicalRecord() {
+        // Existant mock resource
         List<String> meds = new ArrayList<>(1);
         meds.add("tradoxidine:400mg");
-        List<String> allergies = new ArrayList<>(1);
-        allergies.add("shellfish");
 
         medicalRecord = new MedicalRecord();
         medicalRecord.setFirstName("Eric");
         medicalRecord.setLastName("Cadigan");
         medicalRecord.setBirthdate("08/06/1945");
         medicalRecord.setMedications(meds);
-        medicalRecord.setAllergies(allergies);
-
-        // Updated data
-        MedicalRecord updatedMedicalRecord = new MedicalRecord();
-        updatedMedicalRecord.setAllergies(allergies);
+        medicalRecord.setAllergies(Collections.emptyList());
 
         MedicalRecord expected = medicalRecord;
-        MedicalRecord actual = medicalRecordDAO.update(FIRST_NAME, LAST_NAME, updatedMedicalRecord);
+        MedicalRecord actual = medicalRecordService.search(FIRST_NAME, LAST_NAME);
 
         assertEquals(expected, actual);
-    }
-    @Test
-    @DisplayName("returns null for non existant Medical Record //update()")
-    public void givenNonExistantMedicalRecord_whenUpdate_shouldReturnNull() {
-        assertNull(medicalRecordDAO.update(FIRST_NAME, LAST_NAME, null));
     }
 }

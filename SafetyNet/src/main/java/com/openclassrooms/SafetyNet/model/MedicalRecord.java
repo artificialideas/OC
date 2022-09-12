@@ -26,14 +26,4 @@ public class MedicalRecord {
     @JsonProperty("allergies")
     @ElementCollection
     private List<String> allergies;
-
-    public MedicalRecord() {}
-
-    public MedicalRecord(String firstName, String lastName, String birthdate, List<String> medications, List<String> allergies) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthdate = birthdate;
-        this.medications = medications;
-        this.allergies = allergies;
-    }
 }

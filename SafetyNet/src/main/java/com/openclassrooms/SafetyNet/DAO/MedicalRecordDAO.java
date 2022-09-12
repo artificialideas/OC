@@ -39,20 +39,26 @@ public class MedicalRecordDAO {
     public MedicalRecord update(String first, String last, MedicalRecord medicalRecordDetails) {
         MedicalRecord updatedMedicalRecord = this.getMedicalRecordByFullName(first,last);
 
-        if (updatedMedicalRecord != null) {
+        if ((updatedMedicalRecord != null) && (medicalRecordDetails != null)) {
             //if (medicalRecordDetails.getFirstName() != null) updatedMedicalRecord.setFirstName(medicalRecordDetails.getFirstName());
             //if (medicalRecordDetails.getLastName() != null) updatedMedicalRecord.setLastName(medicalRecordDetails.getLastName());
             if (medicalRecordDetails.getBirthdate() != null) updatedMedicalRecord.setBirthdate(medicalRecordDetails.getBirthdate());
 
             // Lists may be empty, so we must compare old values with updated values
             // Medications list
-            Collections.sort(updatedMedicalRecord.getMedications());
-            Collections.sort(medicalRecordDetails.getMedications());
-            if (!(medicalRecordDetails.getMedications().equals(updatedMedicalRecord.getMedications()))) updatedMedicalRecord.setMedications(medicalRecordDetails.getMedications());
+            if (medicalRecordDetails.getMedications() != null) {
+                Collections.sort(updatedMedicalRecord.getMedications());
+                Collections.sort(medicalRecordDetails.getMedications());
+                if (!(medicalRecordDetails.getMedications().equals(updatedMedicalRecord.getMedications())))
+                    updatedMedicalRecord.setMedications(medicalRecordDetails.getMedications());
+            }
             // Allergies list
-            Collections.sort(updatedMedicalRecord.getAllergies());
-            Collections.sort(medicalRecordDetails.getAllergies());
-            if (!(medicalRecordDetails.getAllergies().equals(updatedMedicalRecord.getAllergies()))) updatedMedicalRecord.setAllergies(medicalRecordDetails.getAllergies());
+            if (medicalRecordDetails.getAllergies() != null) {
+                Collections.sort(updatedMedicalRecord.getAllergies());
+                Collections.sort(medicalRecordDetails.getAllergies());
+                if (!(medicalRecordDetails.getAllergies().equals(updatedMedicalRecord.getAllergies())))
+                    updatedMedicalRecord.setAllergies(medicalRecordDetails.getAllergies());
+            }
 
             return updatedMedicalRecord;
         } else {
