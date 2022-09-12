@@ -90,14 +90,14 @@ public class FirestationControllerTest {
         final String ADDRESS = "112 Steppes Pl";
 
         firestation = new Firestation();
-        firestation.setStation(STATION);
+        firestation.setStation(4);
         firestation.setAddress("60 ThunderBolt St");
         firestationService.update(STATION, ADDRESS, firestation);
 
         mockMvc.perform( put("/firestation/" + STATION + '/' + ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(firestation)))
-                .andExpect(jsonPath("$.station", is(4)))
+                .andExpect(jsonPath("$.station", is("4")))
                 .andExpect(jsonPath("$.address", is("60 ThunderBolt St")))
                 .andExpect(status().is2xxSuccessful());
     }
