@@ -18,10 +18,6 @@ public class MedicalRecordService {
         return medicalRecordDAO.getMedicalRecords();
     }
 
-    public List<MedicalRecord> getPeopleAndBirthdatesByMedicalRecord(String firstName, String lastName) {
-        return medicalRecordDAO.getPeopleAndBirthdatesByMedicalRecord(firstName, lastName);
-    }
-
     public MedicalRecord create(MedicalRecord medicalRecord) {
         return medicalRecordDAO.save(medicalRecord);
     }

@@ -5,7 +5,6 @@ import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -20,26 +19,6 @@ public class MedicalRecordDAO {
             }
         }
         return null;
-    }
-
-    public List<MedicalRecord> getPeopleAndBirthdatesByMedicalRecord(String first, String last) {
-//        LocalDate currentDate = LocalDate.now();
-        List<MedicalRecord> peopleMedicalRecord = new ArrayList<>();
-        MedicalRecord personMedicalRecord = new MedicalRecord();
-
-        for (MedicalRecord medicalRecord: DataObjects.getMedicalrecords()) {
-            if ((Objects.equals(medicalRecord.getFirstName(), first)) && (Objects.equals(medicalRecord.getLastName(), last))) {
-//                LocalDate birthDate = LocalDate.parse(medicalRecord.getBirthdate(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-//                age = Period.between(birthDate, currentDate).getYears();
-                personMedicalRecord.setFirstName(first);
-                personMedicalRecord.setLastName(last);
-                personMedicalRecord.setBirthdate(medicalRecord.getBirthdate());
-
-                peopleMedicalRecord.add(personMedicalRecord);
-            }
-        }
-
-        return peopleMedicalRecord;
     }
 
     public List<MedicalRecord> getMedicalRecords() {

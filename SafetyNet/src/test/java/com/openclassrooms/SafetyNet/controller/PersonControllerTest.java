@@ -94,7 +94,7 @@ public class PersonControllerTest {
 
     @Test
     @DisplayName("DELETE - returns a boolean with the result of the delete demand //delete()")
-    public  void givenExistantPerson_whenDeleteWithFirstANDLastName_shouldReturnTrue() throws Exception {
+    public void givenExistantPerson_whenDeleteWithFirstANDLastName_shouldReturnTrue() throws Exception {
         personService.delete(FIRST_NAME, LAST_NAME);
 
         mockMvc.perform( delete("/person/" + FIRST_NAME + '-' + LAST_NAME)
