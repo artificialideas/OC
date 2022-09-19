@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class UrlService {
         List<Person> pCollection = (personDAO
                 .getPersons()
                 .stream()
-                .filter(person -> Arrays.asList(addressStation).contains(person.getAddress()))
+                .filter(person -> addressStation.contains(person.getAddress()))
                 .collect(Collectors.toList()));
         for (Person resource : pCollection) {
             firstName.add(resource.getFirstName());
@@ -55,7 +54,7 @@ public class UrlService {
         List<MedicalRecord> mdCollection = (medicalRecordDAO
                 .getMedicalRecords()
                 .stream()
-                .filter(person -> Arrays.asList(firstName).contains(person.getFirstName()))
+                .filter(person -> firstName.contains(person.getFirstName()))
                 .collect(Collectors.toList()));
         int adults = 0;
         int children = 0;
