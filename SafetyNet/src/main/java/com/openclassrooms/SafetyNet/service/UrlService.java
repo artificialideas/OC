@@ -3,10 +3,7 @@ package com.openclassrooms.SafetyNet.service;
 import com.openclassrooms.SafetyNet.DAO.FirestationDAO;
 import com.openclassrooms.SafetyNet.DAO.MedicalRecordDAO;
 import com.openclassrooms.SafetyNet.DAO.PersonDAO;
-import com.openclassrooms.SafetyNet.DTO.MedicalRecordDTO;
-import com.openclassrooms.SafetyNet.DTO.MedicalRecordDetailsDTO;
-import com.openclassrooms.SafetyNet.DTO.PersonDetailsDTO;
-import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
+import com.openclassrooms.SafetyNet.DTO.*;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
@@ -75,9 +72,10 @@ public class UrlService {
         return personListByStationDTO;
     }
 
-    public List<MedicalRecordDTO> getPersonsByFamily(String address) {
+    public MedicalRecordFamilyDTO getPersonsByFamily(String address) {
         List<String> firstNameList = new ArrayList<>();
-        List<MedicalRecordDTO> allPersonDTO = new ArrayList<>();
+        List<MedicalRecordDTO> allAdultsDTO = new ArrayList<>();
+        List<MedicalRecordDetailsDTO> allChildrenDTO = new ArrayList<>();
 
         // Get all persons sharing the same address
         List<Person> personCollection = personDAO
@@ -92,25 +90,32 @@ public class UrlService {
 
         // MedicalRecord collection filtered by firstName
         List<MedicalRecord> medicalRecordCollection = getMedicalRecordCollectionByFirstName(firstNameList);
-
+        // Group by ages
         for (MedicalRecord medicalRecordResource : medicalRecordCollection) {
             int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
-            // Print age for children only
-            if (age < 17) {
+            if (age < 18) {
+                // Children
                 MedicalRecordDetailsDTO medicalRecordDetailsDTO = new MedicalRecordDetailsDTO();
                 medicalRecordDetailsDTO.setFirstName(medicalRecordResource.getFirstName());
                 medicalRecordDetailsDTO.setLastName(medicalRecordResource.getLastName());
                 medicalRecordDetailsDTO.setAge(age);
-                allPersonDTO.add(medicalRecordDetailsDTO);
+                allChildrenDTO.add(medicalRecordDetailsDTO);
             } else {
+                // Adults
                 MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO();
                 medicalRecordDTO.setFirstName(medicalRecordResource.getFirstName());
                 medicalRecordDTO.setLastName(medicalRecordResource.getLastName());
-                allPersonDTO.add(medicalRecordDTO);
+                allAdultsDTO.add(medicalRecordDTO);
             }
         }
 
-        return allPersonDTO;
+        MedicalRecordFamilyDTO medicalRecordFamilyDTO = new MedicalRecordFamilyDTO();
+        if (allChildrenDTO.size() > 0) {
+            medicalRecordFamilyDTO.setChildren(allChildrenDTO);
+            medicalRecordFamilyDTO.setAdults(allAdultsDTO);
+            return medicalRecordFamilyDTO;
+        }
+        return null;
     }
 
     public List<String> getEmailsByCity(String city) {
