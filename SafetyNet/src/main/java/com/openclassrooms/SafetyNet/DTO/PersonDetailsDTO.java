@@ -3,9 +3,7 @@ package com.openclassrooms.SafetyNet.DTO;
 import lombok.Data;
 
 @Data
-public class PersonDetailsDTO {
-    private String firstName;
-    private String lastName;
+public class PersonDetailsDTO extends PersonDTO {
     private String address;
     private String phone;
 }
