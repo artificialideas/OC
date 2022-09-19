@@ -118,17 +118,37 @@ public class UrlService {
         return null;
     }
 
+    public List<String> getPhonesByStation(int station) {
+        List<String> addressStationList = new ArrayList<>();
+        List<String> cityPhones = new ArrayList<>();
+
+        // Firestation collection filtered by given station number
+        List<Firestation> firestationCollection = getFirestationCollectionByStation(station);
+        // Extract addresses
+        for (Firestation firestationResource : firestationCollection) {
+            addressStationList.add(firestationResource.getAddress());
+        }
+
+        // Person collection filtered by selected station addresses
+        List<Person> personCollection = getPersonCollectionByAddress(addressStationList);
+        // Extract first name
+        for (Person personResource : personCollection) {
+            cityPhones.add(personResource.getPhone());
+        }
+        return cityPhones;
+    }
+
     public List<String> getEmailsByCity(String city) {
         List<String> cityEmails = new ArrayList<>();
 
-        List<Person> pCollection = (personDAO
+        List<Person> personCollection = (personDAO
                 .getPersons()
                 .stream()
                 .filter(person -> (Objects.equals(person.getCity(), city)))
                 .collect(Collectors.toList()));
 
-        for (Person resource : pCollection) {
-            cityEmails.add(resource.getEmail());
+        for (Person personResource : personCollection) {
+            cityEmails.add(personResource.getEmail());
         }
         return cityEmails;
     }

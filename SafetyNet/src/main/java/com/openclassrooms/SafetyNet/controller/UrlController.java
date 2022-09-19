@@ -27,10 +27,25 @@ public class UrlController {
         return urlService.getPersonsByStation(station);
     }
 
+
+    /**
+     * READ - Filter Person through address
+     * @return - A list of all members living in the same house
+     */
     @GetMapping("childAlert")
     public MedicalRecordFamilyDTO getPersonsByFamily(
             @RequestParam(value = "address", required = true) String address) {
         return urlService.getPersonsByFamily(address);
+    }
+
+    /**
+     * READ - Filter Person collection through firestation number
+     * @return - A list of all phones from people in the same area
+     */
+    @GetMapping("phoneAlert")
+    public List<String> getPhonesByStation(
+            @RequestParam(value = "firestation", required = true) int station) {
+        return urlService.getPhonesByStation(station);
     }
 
     /**
