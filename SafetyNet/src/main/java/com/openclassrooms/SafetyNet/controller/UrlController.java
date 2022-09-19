@@ -1,6 +1,6 @@
 package com.openclassrooms.SafetyNet.controller;
 
-import com.openclassrooms.SafetyNet.DTO.PersonDTO;
+import com.openclassrooms.SafetyNet.DTO.MedicalRecordDTO;
 import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
 import com.openclassrooms.SafetyNet.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UrlController {
     }
 
     @GetMapping("childAlert")
-    public List<PersonDTO> getPersonsByFamily(
+    public List<MedicalRecordDTO> getPersonsByFamily(
             @RequestParam(value = "address", required = true) String address) {
         return urlService.getPersonsByFamily(address);
     }

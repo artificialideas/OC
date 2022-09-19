@@ -3,7 +3,8 @@ package com.openclassrooms.SafetyNet.service;
 import com.openclassrooms.SafetyNet.DAO.FirestationDAO;
 import com.openclassrooms.SafetyNet.DAO.MedicalRecordDAO;
 import com.openclassrooms.SafetyNet.DAO.PersonDAO;
-import com.openclassrooms.SafetyNet.DTO.PersonDTO;
+import com.openclassrooms.SafetyNet.DTO.MedicalRecordDTO;
+import com.openclassrooms.SafetyNet.DTO.MedicalRecordDetailsDTO;
 import com.openclassrooms.SafetyNet.DTO.PersonDetailsDTO;
 import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
 import com.openclassrooms.SafetyNet.model.Firestation;
@@ -28,7 +29,9 @@ public class UrlService {
     public PersonListByStationDTO getPersonsByStation(int station) {
         List<String> addressStationList = new ArrayList<>();
         List<String> firstNameList = new ArrayList<>();
-        List<PersonDetailsDTO> result = new ArrayList<>();
+        int adults = 0;
+        int children = 0;
+        List<PersonDetailsDTO> allPersonsDetailsDTO = new ArrayList<>();
 
         // Firestation collection filtered by given station number
         List<Firestation> firestationCollection = getFirestationCollectionByStation(station);
@@ -47,8 +50,6 @@ public class UrlService {
         // MedicalRecord collection filtered by firstName
         List<MedicalRecord> medicalRecordCollection = getMedicalRecordCollectionByFirstName(firstNameList);
         // Extract birthdate
-        int adults = 0;
-        int children = 0;
         for (MedicalRecord resource : medicalRecordCollection) {
             if (getBirthdateByMedicalRecord(resource.getBirthdate()) > 17) {
                 adults++;
@@ -64,22 +65,57 @@ public class UrlService {
             personDetailsDTO.setLastName(personResource.getLastName());
             personDetailsDTO.setAddress(personResource.getAddress());
             personDetailsDTO.setPhone(personResource.getPhone());
-            result.add(personDetailsDTO);
+            allPersonsDetailsDTO.add(personDetailsDTO);
         }
         PersonListByStationDTO personListByStationDTO = new PersonListByStationDTO();
-        personListByStationDTO.setPersonDetailsDTOS(result);
+        personListByStationDTO.setPersonDetailsDTOS(allPersonsDetailsDTO);
         personListByStationDTO.setAdults(adults);
         personListByStationDTO.setChildren(children);
 
         return personListByStationDTO;
     }
 
-    public List<PersonDTO> getPersonsByFamily(String address) {
-        List<Person> personCollection = getPersonCollectionByAddress(address);
+    public List<MedicalRecordDTO> getPersonsByFamily(String address) {
+        List<String> firstNameList = new ArrayList<>();
+        List<MedicalRecordDTO> allPersonDTO = new ArrayList<>();
+
+        // Get all persons sharing the same address
+        List<Person> personCollection = personDAO
+                .getPersons()
+                .stream()
+                .filter(person -> (Objects.equals(person.getAddress(), address)))
+                .collect(Collectors.toList());
+        // Extract first name
+        for (Person personResource : personCollection) {
+            firstNameList.add(personResource.getFirstName());
+        }
+
+        // MedicalRecord collection filtered by firstName
+        List<MedicalRecord> medicalRecordCollection = getMedicalRecordCollectionByFirstName(firstNameList);
+
+        for (MedicalRecord medicalRecordResource : medicalRecordCollection) {
+            int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
+            // Print age for children only
+            if (age < 17) {
+                MedicalRecordDetailsDTO medicalRecordDetailsDTO = new MedicalRecordDetailsDTO();
+                medicalRecordDetailsDTO.setFirstName(medicalRecordResource.getFirstName());
+                medicalRecordDetailsDTO.setLastName(medicalRecordResource.getLastName());
+                medicalRecordDetailsDTO.setAge(age);
+                allPersonDTO.add(medicalRecordDetailsDTO);
+            } else {
+                MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO();
+                medicalRecordDTO.setFirstName(medicalRecordResource.getFirstName());
+                medicalRecordDTO.setLastName(medicalRecordResource.getLastName());
+                allPersonDTO.add(medicalRecordDTO);
+            }
+        }
+
+        return allPersonDTO;
     }
 
     public List<String> getEmailsByCity(String city) {
         List<String> cityEmails = new ArrayList<>();
+
         List<Person> pCollection = (personDAO
                 .getPersons()
                 .stream()
@@ -117,9 +153,9 @@ public class UrlService {
                 .collect(Collectors.toList()));
     }
 
-    int getBirthdateByMedicalRecord(String birthDateString) {
+    int getBirthdateByMedicalRecord(String birthDay) {
         LocalDate currentDate = LocalDate.now();
-        LocalDate birthDate = LocalDate.parse(birthDateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate birthDate = LocalDate.parse(birthDay, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
 
         return Period.between(birthDate, currentDate).getYears();
     }
