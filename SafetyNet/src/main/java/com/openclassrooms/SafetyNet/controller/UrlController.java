@@ -1,6 +1,6 @@
 package com.openclassrooms.SafetyNet.controller;
 
-import com.openclassrooms.SafetyNet.DTO.UrlDTO;
+import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
 import com.openclassrooms.SafetyNet.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +17,11 @@ public class UrlController {
     private UrlService urlService;
 
     /**
-     * READ
-     * @return
+     * READ - Filter People through a selected firestation number
+     * @return - A list of all persons as well as total of adults/children
      */
     @GetMapping("firestation")
-    public List<UrlDTO> getPersonsByStation(
+    public PersonListByStationDTO getPersonsByStation(
             @RequestParam(value = "stationNumber", required = true) int station) {
         return urlService.getPersonsByStation(station);
     }

@@ -86,18 +86,18 @@ public class FirestationControllerTest {
     @Test
     @DisplayName("PUT - returns the updated details of an existant Firestation resource //update()")
     public void givenExistantFirestation_whenStationORAddressChanges_shouldReturnFirestation() throws Exception {
-        final int STATION = 4;
-        final String ADDRESS = "112 Steppes Pl";
+        final int STATION = 2;
+        final String ADDRESS = "951 LoneTree Rd";
 
         firestation = new Firestation();
-        firestation.setStation(4);
+        firestation.setStation(2);
         firestation.setAddress("60 ThunderBolt St");
         firestationService.update(STATION, ADDRESS, firestation);
 
         mockMvc.perform( put("/firestation/" + STATION + '/' + ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(firestation)))
-                .andExpect(jsonPath("$.station", is("4")))
+                .andExpect(jsonPath("$.station", is("2")))
                 .andExpect(jsonPath("$.address", is("60 ThunderBolt St")))
                 .andExpect(status().is2xxSuccessful());
     }

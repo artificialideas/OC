@@ -3,7 +3,8 @@ package com.openclassrooms.SafetyNet.service;
 import com.openclassrooms.SafetyNet.DAO.FirestationDAO;
 import com.openclassrooms.SafetyNet.DAO.MedicalRecordDAO;
 import com.openclassrooms.SafetyNet.DAO.PersonDAO;
-import com.openclassrooms.SafetyNet.DTO.UrlDTO;
+import com.openclassrooms.SafetyNet.DTO.PersonDetailsDTO;
+import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
 import com.openclassrooms.SafetyNet.model.Firestation;
 import com.openclassrooms.SafetyNet.model.MedicalRecord;
 import com.openclassrooms.SafetyNet.model.Person;
@@ -23,11 +24,11 @@ public class UrlService {
     private final FirestationDAO firestationDAO = new FirestationDAO();
     private final MedicalRecordDAO medicalRecordDAO = new MedicalRecordDAO();
 
-    public List<UrlDTO> getPersonsByStation(int station) {
+    public PersonListByStationDTO getPersonsByStation(int station) {
         List<String> addressStation = new ArrayList<>();
         List<String> firstName = new ArrayList<>();
         List<Integer> birthDate = new ArrayList<>();
-        List<UrlDTO> result = new ArrayList<>();
+        List<PersonDetailsDTO> result = new ArrayList<>();
 
         // Firestation collection filtered by given station number
         List<Firestation> fsCollection = (firestationDAO
@@ -69,23 +70,19 @@ public class UrlService {
 
         // Create our UrlDTO object
         for (Person resource : pCollection) {
-            UrlDTO toReturn = new UrlDTO();
-            toReturn.setFirstName(resource.getFirstName());
-            toReturn.setLastName(resource.getLastName());
-            toReturn.setAddress(resource.getAddress());
-            toReturn.setPhone(resource.getPhone());
-            result.add(toReturn);
+            PersonDetailsDTO personDetailsDTO = new PersonDetailsDTO();
+            personDetailsDTO.setFirstName(resource.getFirstName());
+            personDetailsDTO.setLastName(resource.getLastName());
+            personDetailsDTO.setAddress(resource.getAddress());
+            personDetailsDTO.setPhone(resource.getPhone());
+            result.add(personDetailsDTO);
         }
-        String info = ("For station number " + station + " there are " + adults + " adults and " + children + " children (less than 17 years old).");
-System.out.println(info);
-        return result;
-    }
+        PersonListByStationDTO personListByStationDTO = new PersonListByStationDTO();
+        personListByStationDTO.setPersonDetailsDTOS(result);
+        personListByStationDTO.setAdults(adults);
+        personListByStationDTO.setChildren(children);
 
-    public int getBirthdateByMedicalRecord(String birthDateString) {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate birthDate = LocalDate.parse(birthDateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-
-        return Period.between(birthDate, currentDate).getYears();
+        return personListByStationDTO;
     }
 
     public List<String> getEmailsByCity(String city) {
@@ -102,22 +99,11 @@ System.out.println(info);
         return cityEmails;
     }
 
-    private UrlDTO convertDataIntoDTO (UrlDTO data) {
-        // create instance of our UrlDTO class
-        UrlDTO dto = new UrlDTO();
+    /** Methods */
+    public int getBirthdateByMedicalRecord(String birthDateString) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate birthDate = LocalDate.parse(birthDateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
 
-        //set all data in dto from the UrlDTO
-        dto.setFirstName(data.getFirstName());
-        dto.setLastName(data.getLastName());
-        dto.setAddress(data.getAddress());
-        dto.setCity(data.getCity());
-        dto.setPhone(data.getPhone());
-        dto.setEmail(data.getEmail());
-        dto.setStation(data.getStation());
-        dto.setBirthdate(data.getBirthdate());
-        dto.setMedications(data.getMedications());
-        dto.setAllergies(data.getAllergies());
-
-        return dto;
+        return Period.between(birthDate, currentDate).getYears();
     }
 }
