@@ -28,7 +28,7 @@ public class UrlService {
         List<String> firstNameList = new ArrayList<>();
         int adults = 0;
         int children = 0;
-        List<PersonDetailsDTO> allPersonsDetailsDTO = new ArrayList<>();
+        List<PersonDTO> allPersonsDTO = new ArrayList<>();
 
         // Firestation collection filtered by given station number
         List<Firestation> firestationCollection = getFirestationCollectionByStation(station);
@@ -55,17 +55,17 @@ public class UrlService {
             }
         }
 
-        // PersonDetailsDTO object to send
+        // PersonDTO object to send
         for (Person personResource : personCollection) {
-            PersonDetailsDTO personDetailsDTO = new PersonDetailsDTO();
-            personDetailsDTO.setFirstName(personResource.getFirstName());
-            personDetailsDTO.setLastName(personResource.getLastName());
-            personDetailsDTO.setAddress(personResource.getAddress());
-            personDetailsDTO.setPhone(personResource.getPhone());
-            allPersonsDetailsDTO.add(personDetailsDTO);
+            PersonDTO personDTO = new PersonDTO();
+            personDTO.setFirstName(personResource.getFirstName());
+            personDTO.setLastName(personResource.getLastName());
+            personDTO.setAddress(personResource.getAddress());
+            personDTO.setPhone(personResource.getPhone());
+            allPersonsDTO.add(personDTO);
         }
         PersonListByStationDTO personListByStationDTO = new PersonListByStationDTO();
-        personListByStationDTO.setPersonDetailsDTOS(allPersonsDetailsDTO);
+        personListByStationDTO.setPersonsDTO(allPersonsDTO);
         personListByStationDTO.setAdults(adults);
         personListByStationDTO.setChildren(children);
 
@@ -74,8 +74,9 @@ public class UrlService {
 
     public MedicalRecordFamilyDTO getPersonsByFamily(String address) {
         List<String> firstNameList = new ArrayList<>();
-        List<MedicalRecordDTO> allAdultsDTO = new ArrayList<>();
-        List<MedicalRecordDetailsDTO> allChildrenDTO = new ArrayList<>();
+        List<MedicalRecordDTO> adultsDTO = new ArrayList<>();
+        List<MedicalRecordDetailsDTO> childrenDTO = new ArrayList<>();
+        List<MedicalRecordDetailsDTO> familyDTO = new ArrayList<>();
 
         // Get all persons sharing the same address
         List<Person> personCollection = personDAO
@@ -93,26 +94,26 @@ public class UrlService {
         // Group by ages
         for (MedicalRecord medicalRecordResource : medicalRecordCollection) {
             int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
-            if (age < 18) {
+            if (age > 17) {
+                // Adults
+                MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO();
+                medicalRecordDTO.setFirstName(medicalRecordResource.getFirstName());
+                medicalRecordDTO.setLastName(medicalRecordResource.getLastName());
+                adultsDTO.add(medicalRecordDTO);
+            } else {
                 // Children
                 MedicalRecordDetailsDTO medicalRecordDetailsDTO = new MedicalRecordDetailsDTO();
                 medicalRecordDetailsDTO.setFirstName(medicalRecordResource.getFirstName());
                 medicalRecordDetailsDTO.setLastName(medicalRecordResource.getLastName());
                 medicalRecordDetailsDTO.setAge(age);
-                allChildrenDTO.add(medicalRecordDetailsDTO);
-            } else {
-                // Adults
-                MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO();
-                medicalRecordDTO.setFirstName(medicalRecordResource.getFirstName());
-                medicalRecordDTO.setLastName(medicalRecordResource.getLastName());
-                allAdultsDTO.add(medicalRecordDTO);
+                medicalRecordDetailsDTO.setAdults(adultsDTO);
+                familyDTO.add(medicalRecordDetailsDTO);
             }
         }
 
         MedicalRecordFamilyDTO medicalRecordFamilyDTO = new MedicalRecordFamilyDTO();
-        if (allChildrenDTO.size() > 0) {
-            medicalRecordFamilyDTO.setChildren(allChildrenDTO);
-            medicalRecordFamilyDTO.setAdults(allAdultsDTO);
+        if (familyDTO.size() > 0) {
+            medicalRecordFamilyDTO.setChildren(familyDTO);
             return medicalRecordFamilyDTO;
         }
         return null;
@@ -131,10 +132,13 @@ public class UrlService {
 
         // Person collection filtered by selected station addresses
         List<Person> personCollection = getPersonCollectionByAddress(addressStationList);
-        // Extract first name
+        // Extract phone number and add it to return list (avoid repetitions)
         for (Person personResource : personCollection) {
-            cityPhones.add(personResource.getPhone());
+            if (!(cityPhones.contains(personResource.getPhone()))) {
+                cityPhones.add(personResource.getPhone());
+            }
         }
+
         return cityPhones;
     }
 

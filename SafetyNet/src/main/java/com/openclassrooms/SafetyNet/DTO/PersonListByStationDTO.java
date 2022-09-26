@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class PersonListByStationDTO {
-    private List<PersonDetailsDTO> personDetailsDTOS;
+    private List<PersonDTO> personsDTO;
     private int adults;
     private int children;
 }

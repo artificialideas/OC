@@ -7,5 +7,4 @@ import java.util.List;
 @Data
 public class MedicalRecordFamilyDTO {
     private List<MedicalRecordDetailsDTO> children;
-    private List<MedicalRecordDTO> adults;
 }
