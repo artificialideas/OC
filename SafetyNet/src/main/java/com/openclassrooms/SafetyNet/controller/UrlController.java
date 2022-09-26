@@ -1,6 +1,8 @@
 package com.openclassrooms.SafetyNet.controller;
 
+import com.openclassrooms.SafetyNet.DTO.FirestationByFamilyAddressDTO;
 import com.openclassrooms.SafetyNet.DTO.MedicalRecordFamilyDTO;
+import com.openclassrooms.SafetyNet.DTO.MedicalRecordFullRapportDTO;
 import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
 import com.openclassrooms.SafetyNet.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/")
@@ -46,6 +51,35 @@ public class UrlController {
     public List<String> getPhonesByStation(
             @RequestParam(value = "firestation", required = true) int station) {
         return urlService.getPhonesByStation(station);
+    }
+
+    /**
+     * READ - Filter Person collection through address
+     * @return - A list of all families covered by the same firestation
+     */
+    @GetMapping("fire")
+    public FirestationByFamilyAddressDTO getFamilyByAddress(
+            @RequestParam(value = "address", required = true) String address) {
+        return urlService.getFamilyByAddress(address);
+    }
+
+    /**
+     * READ - Filter Person collection through address
+     * @return - A list of all families covered by the same firestation
+     */
+    @GetMapping("flood/stations")
+    public List<MedicalRecordFullRapportDTO> getFamilyByStation(
+            @RequestParam(value = "stations", required = true) String stations) {
+        List<Integer> integerList = new ArrayList<>();
+
+        Pattern numPattern = Pattern.compile("(\\d+)");
+        Matcher matcher = numPattern.matcher(stations);
+        while (matcher.find()) {
+            integerList.add(Integer.valueOf(matcher.group()));
+        }
+        System.out.println(integerList);
+
+        return urlService.getFamilyByStation(integerList);
     }
 
     /**
