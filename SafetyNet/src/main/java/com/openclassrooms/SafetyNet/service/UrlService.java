@@ -139,8 +139,7 @@ public class UrlService {
         return cityPhones;
     }
 
-    public FirestationByFamilyAddressDTO getFamilyByAddress(String address) { //ToDo: add phone numbers
-        List<String> firstNameList = new ArrayList<>();
+    public FirestationByFamilyAddressDTO getFamilyByAddress(String address) {
         List<MedicalRecordFullRapportDTO> familyDTO = new ArrayList<>();
 
         // Get all persons sharing the same address
@@ -151,24 +150,24 @@ public class UrlService {
                 .collect(Collectors.toList());
         // Extract first name
         for (Person personResource : personCollection) {
-            firstNameList.add(personResource.getFirstName());
-        }
-
-        // MedicalRecord collection filtered by firstName
-        List<MedicalRecord> medicalRecordCollection = getMedicalRecordCollectionByFirstName(firstNameList);
-        // Set all details
-        for (MedicalRecord medicalRecordResource : medicalRecordCollection) {
+            MedicalRecord medicalRecordResource = medicalRecordDAO
+                    .getMedicalRecords()
+                    .stream()
+                    .filter(person -> person.getFirstName().equals(personResource.getFirstName()))
+                    .findFirst()
+                    .orElse(null);
             int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
 
             MedicalRecordFullRapportDTO medicalRecordFullRapportDTO = new MedicalRecordFullRapportDTO();
             medicalRecordFullRapportDTO.setFirstName(medicalRecordResource.getFirstName());
             medicalRecordFullRapportDTO.setLastName(medicalRecordResource.getLastName());
+            medicalRecordFullRapportDTO.setPhone(personResource.getPhone());
             medicalRecordFullRapportDTO.setAge(age);
             medicalRecordFullRapportDTO.setMedications(medicalRecordResource.getMedications());
             medicalRecordFullRapportDTO.setAllergies(medicalRecordResource.getAllergies());
             familyDTO.add(medicalRecordFullRapportDTO);
         }
-
+        familyDTO.sort((a, b) -> b.getAge() - a.getAge());
         FirestationByFamilyAddressDTO firestationByFamilyAddressDTO = new FirestationByFamilyAddressDTO();
         firestationByFamilyAddressDTO.setStation(getFirestationResourceByAddress(address).getStation());
         firestationByFamilyAddressDTO.setFamily(familyDTO);
@@ -177,6 +176,7 @@ public class UrlService {
     }
 
     public List<FirestationByFamilyDetailsDTO> getFamilyByStation(List<Integer> stations) { //ToDo fix last logic (print person if equals address)
+        String currentFirestationAddress = "";
         List<MedicalRecordFullRapportDTO> personMedicalRecord = new ArrayList<>();
         List<FirestationByFamilyDetailsDTO> allPeople = new ArrayList<>();
 
@@ -188,8 +188,9 @@ public class UrlService {
                 .collect(Collectors.toList());
         // Extract addresses
         for (Firestation firestationResource : firestationCollection) {
+            currentFirestationAddress = firestationResource.getAddress();
             // Avoid repetitions using station address
-            if (!(allPeople.contains(firestationResource.getAddress()))) {
+            if (!(allPeople.contains(currentFirestationAddress))) {
                 // For each address, find who lives in there
                 List<Person> personCollection = personDAO
                         .getPersons()
