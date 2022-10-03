@@ -176,9 +176,8 @@ public class UrlService {
         return firestationByFamilyAddressDTO;
     }
 
-    public List<FirestationByFamilyDetailsDTO> getFamilyByStation(List<Integer> stations) { //ToDo fix last logic (print person if equals address)
+    public List<FirestationByFamilyDetailsDTO> getFamilyByStation(List<Integer> stations) {
         String currentFirestationAddress = "";
-        List<MedicalRecordFullRapportDTO> personMedicalRecord = new ArrayList<>();
         List<FirestationByFamilyDetailsDTO> allPeople = new ArrayList<>();
 
         // Firestation collection filtered by given list of station numbers
@@ -200,6 +199,7 @@ public class UrlService {
                         .collect(Collectors.toList());
 
                 // For each Person, get its Medical Record
+                List<MedicalRecordFullRapportDTO> personMedicalRecord = new ArrayList<>();
                 for (Person personResource : personCollection) {
                     if (Objects.equals(personResource.getAddress(), firestationResource.getAddress())) {
                         MedicalRecord medicalRecordResource = medicalRecordDAO
@@ -222,7 +222,6 @@ public class UrlService {
                     }
                 }
 
-                System.out.println("personMedicalRecord" + personMedicalRecord);
                 FirestationByFamilyDetailsDTO firestationByFamilyDetailsDTO = new FirestationByFamilyDetailsDTO();
                 firestationByFamilyDetailsDTO.setAddress(firestationResource.getAddress());
                 firestationByFamilyDetailsDTO.setPeople(personMedicalRecord);
