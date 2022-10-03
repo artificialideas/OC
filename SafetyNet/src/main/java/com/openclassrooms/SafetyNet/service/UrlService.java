@@ -156,6 +156,7 @@ public class UrlService {
                     .filter(person -> person.getFirstName().equals(personResource.getFirstName()))
                     .findFirst()
                     .orElse(null);
+            assert medicalRecordResource != null;
             int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
 
             MedicalRecordFullRapportDTO medicalRecordFullRapportDTO = new MedicalRecordFullRapportDTO();
@@ -207,6 +208,7 @@ public class UrlService {
                                 .filter(person -> person.getFirstName().equals(personResource.getFirstName()))
                                 .findFirst()
                                 .orElse(null);
+                        assert medicalRecordResource != null;
                         int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
 
                         MedicalRecordFullRapportDTO medicalRecordFullRapportDTO = new MedicalRecordFullRapportDTO();
@@ -231,14 +233,65 @@ public class UrlService {
         return allPeople;
     }
 
+    public PersonDetailsDTO getPersonDetails(String first, String last) {
+        List<MedicalRecordDTO> allRelatives = new ArrayList<>();
+
+        // Get selected Person resource using given first name
+        Person personResource = personDAO
+                .getPersons()
+                .stream()
+                .filter(person -> person.getFirstName().equals(first))
+                .findFirst()
+                .orElse(null);
+        //Get all persons with same last name
+        List<MedicalRecord> relatives = medicalRecordDAO
+                .getMedicalRecords()
+                .stream()
+                .filter(person -> person.getLastName().equals(last))
+                .collect(Collectors.toList());
+        for (MedicalRecord relative : relatives) {
+            if (!(relative.getFirstName().equals(first))) {
+                MedicalRecordDTO newRelative = new MedicalRecordDTO();
+                newRelative.setFirstName(relative.getFirstName());
+                newRelative.setLastName(relative.getLastName());
+                allRelatives.add(newRelative);
+            }
+        }
+
+        PersonDetailsDTO personDetailsDTO = new PersonDetailsDTO();
+        // Set details only for the selected person
+        assert personResource != null;
+        if (personResource.getFirstName().equals(first)) {
+            MedicalRecord medicalRecordResource = medicalRecordDAO
+                    .getMedicalRecords()
+                    .stream()
+                    .filter(person -> person.getFirstName().equals(personResource.getFirstName()))
+                    .findFirst()
+                    .orElse(null);
+            assert medicalRecordResource != null;
+            int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
+
+            personDetailsDTO.setFirstName(personResource.getFirstName());
+            personDetailsDTO.setLastName(personResource.getLastName());
+            personDetailsDTO.setAddress(personResource.getAddress());
+            personDetailsDTO.setAge(age);
+            personDetailsDTO.setEmail(personResource.getEmail());
+            personDetailsDTO.setMedications(medicalRecordResource.getMedications());
+            personDetailsDTO.setAllergies(medicalRecordResource.getAllergies());
+            personDetailsDTO.setRelatives(allRelatives);
+        }
+
+        return personDetailsDTO;
+    }
+
     public List<String> getEmailsByCity(String city) {
         List<String> cityEmails = new ArrayList<>();
 
-        List<Person> personCollection = (personDAO
+        List<Person> personCollection = personDAO
                 .getPersons()
                 .stream()
                 .filter(person -> (Objects.equals(person.getCity(), city)))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
         for (Person personResource : personCollection) {
             cityEmails.add(personResource.getEmail());

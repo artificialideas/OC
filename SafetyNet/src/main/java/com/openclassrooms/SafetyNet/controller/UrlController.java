@@ -3,10 +3,7 @@ package com.openclassrooms.SafetyNet.controller;
 import com.openclassrooms.SafetyNet.DTO.*;
 import com.openclassrooms.SafetyNet.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +48,7 @@ public class UrlController {
     }
 
     /**
-     * READ - Filter Person collection through address
+     * READ - Filter Person and Medical Record collections through address
      * @return - A list of all families covered by the same firestation
      */
     @GetMapping("fire")
@@ -61,8 +58,8 @@ public class UrlController {
     }
 
     /**
-     * READ - Filter Person collection through address
-     * @return - A list of all families covered by the same firestation
+     * READ - Filter Person and Medical Record collections through station number
+     * @return - A list of all people covered by the same firestation
      */
     @GetMapping("flood/stations")
     public List<FirestationByFamilyDetailsDTO> getFamilyByStation(
@@ -76,6 +73,17 @@ public class UrlController {
         }
 
         return urlService.getFamilyByStation(integerList);
+    }
+
+    /**
+     * READ - Filter Person collection through first and last names
+     * @return - A list of all details of selected Person with list of names sharing same last name
+     */
+    @GetMapping("personInfo")
+    public PersonDetailsDTO getPersonDetails(
+            @RequestParam(value = "firstName", required = true) String firstName,
+            @RequestParam(value = "lastName", required = true) String lastName) {
+        return urlService.getPersonDetails(firstName, lastName);
     }
 
     /**
