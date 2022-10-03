@@ -176,11 +176,9 @@ public class UrlService {
         return firestationByFamilyAddressDTO;
     }
 
-    public List<MedicalRecordFullRapportDTO> getFamilyByStation(List<Integer> stations) {
-        List<String> addressStationList = new ArrayList<>();
-        List<String> firstNameList = new ArrayList<>();
-        List<MedicalRecordFullRapportDTO> familyDTO = new ArrayList<>();
-        List<FirestationByFamilyDetailsDTO> allFamilies = new ArrayList<>();
+    public List<FirestationByFamilyDetailsDTO> getFamilyByStation(List<Integer> stations) { //ToDo fix last logic (print person if equals address)
+        List<MedicalRecordFullRapportDTO> personMedicalRecord = new ArrayList<>();
+        List<FirestationByFamilyDetailsDTO> allPeople = new ArrayList<>();
 
         // Firestation collection filtered by given list of station numbers
         List<Firestation> firestationCollection = firestationDAO
@@ -190,40 +188,46 @@ public class UrlService {
                 .collect(Collectors.toList());
         // Extract addresses
         for (Firestation firestationResource : firestationCollection) {
-            if (!(addressStationList.contains(firestationResource.getAddress()))) {
-                addressStationList.add(firestationResource.getAddress());
+            // Avoid repetitions using station address
+            if (!(allPeople.contains(firestationResource.getAddress()))) {
+                // For each address, find who lives in there
+                List<Person> personCollection = personDAO
+                        .getPersons()
+                        .stream()
+                        .filter(person -> (Objects.equals(person.getAddress(), firestationResource.getAddress())))
+                        .collect(Collectors.toList());
+
+                // For each Person, get its Medical Record
+                for (Person personResource : personCollection) {
+                    if (Objects.equals(personResource.getAddress(), firestationResource.getAddress())) {
+                        MedicalRecord medicalRecordResource = medicalRecordDAO
+                                .getMedicalRecords()
+                                .stream()
+                                .filter(person -> person.getFirstName().equals(personResource.getFirstName()))
+                                .findFirst()
+                                .orElse(null);
+                        int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
+
+                        MedicalRecordFullRapportDTO medicalRecordFullRapportDTO = new MedicalRecordFullRapportDTO();
+                        medicalRecordFullRapportDTO.setFirstName(medicalRecordResource.getFirstName());
+                        medicalRecordFullRapportDTO.setLastName(medicalRecordResource.getLastName());
+                        medicalRecordFullRapportDTO.setPhone(personResource.getPhone());
+                        medicalRecordFullRapportDTO.setAge(age);
+                        medicalRecordFullRapportDTO.setMedications(medicalRecordResource.getMedications());
+                        medicalRecordFullRapportDTO.setAllergies(medicalRecordResource.getAllergies());
+                        personMedicalRecord.add(medicalRecordFullRapportDTO);
+                    }
+                }
+
+                System.out.println("personMedicalRecord" + personMedicalRecord);
+                FirestationByFamilyDetailsDTO firestationByFamilyDetailsDTO = new FirestationByFamilyDetailsDTO();
+                firestationByFamilyDetailsDTO.setAddress(firestationResource.getAddress());
+                firestationByFamilyDetailsDTO.setPeople(personMedicalRecord);
+                allPeople.add(firestationByFamilyDetailsDTO);
             }
         }
 
-        // Person collection filtered by selected station addresses
-        List<Person> personCollection = getPersonCollectionByAddress(addressStationList);
-        // Extract first name
-        for (Person personResource : personCollection) {
-            firstNameList.add(personResource.getFirstName());
-        }
-
-        // MedicalRecord collection filtered by firstName
-        List<MedicalRecord> medicalRecordCollection = getMedicalRecordCollectionByFirstName(firstNameList);
-        // Set all details
-        for (MedicalRecord medicalRecordResource : medicalRecordCollection) {
-            int age = getBirthdateByMedicalRecord(medicalRecordResource.getBirthdate());
-
-            MedicalRecordFullRapportDTO medicalRecordFullRapportDTO = new MedicalRecordFullRapportDTO();
-            medicalRecordFullRapportDTO.setFirstName(medicalRecordResource.getFirstName());
-            medicalRecordFullRapportDTO.setLastName(medicalRecordResource.getLastName());
-            medicalRecordFullRapportDTO.setAge(age);
-            medicalRecordFullRapportDTO.setMedications(medicalRecordResource.getMedications());
-            medicalRecordFullRapportDTO.setAllergies(medicalRecordResource.getAllergies());
-            familyDTO.add(medicalRecordFullRapportDTO);
-        }
-
-        for (MedicalRecordFullRapportDTO family : familyDTO) {
-            FirestationByFamilyDetailsDTO firestationByFamilyDetailsDTO = new FirestationByFamilyDetailsDTO();
-            //firestationByFamilyDetailsDTO.setFamily((List<MedicalRecordFullRapportDTO>) family);
-            allFamilies.add(firestationByFamilyDetailsDTO);
-        }
-
-        return familyDTO;
+        return allPeople;
     }
 
     public List<String> getEmailsByCity(String city) {

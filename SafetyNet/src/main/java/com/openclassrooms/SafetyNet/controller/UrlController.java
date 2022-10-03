@@ -1,9 +1,6 @@
 package com.openclassrooms.SafetyNet.controller;
 
-import com.openclassrooms.SafetyNet.DTO.FirestationByFamilyAddressDTO;
-import com.openclassrooms.SafetyNet.DTO.MedicalRecordFamilyDTO;
-import com.openclassrooms.SafetyNet.DTO.MedicalRecordFullRapportDTO;
-import com.openclassrooms.SafetyNet.DTO.PersonListByStationDTO;
+import com.openclassrooms.SafetyNet.DTO.*;
 import com.openclassrooms.SafetyNet.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +65,7 @@ public class UrlController {
      * @return - A list of all families covered by the same firestation
      */
     @GetMapping("flood/stations")
-    public List<MedicalRecordFullRapportDTO> getFamilyByStation(
+    public List<FirestationByFamilyDetailsDTO> getFamilyByStation(
             @RequestParam(value = "stations", required = true) String stations) {
         List<Integer> integerList = new ArrayList<>();
 
@@ -77,7 +74,6 @@ public class UrlController {
         while (matcher.find()) {
             integerList.add(Integer.valueOf(matcher.group()));
         }
-        System.out.println(integerList);
 
         return urlService.getFamilyByStation(integerList);
     }

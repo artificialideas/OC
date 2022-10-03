@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class FirestationByFamilyDetailsDTO {
     private String address;
-    private List<MedicalRecordFullRapportDTO> family;
+    private List<MedicalRecordFullRapportDTO> people;
 }
