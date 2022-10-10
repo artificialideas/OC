@@ -1,6 +1,5 @@
 package com.openclassrooms.SafetyNet.DAO;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.SafetyNet.model.DataObjects;
 import com.openclassrooms.SafetyNet.model.Firestation;
@@ -15,8 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,6 +42,12 @@ public class FirestationDAOTest {
     @DisplayName("returns null for non existant Firestation //getFirestationByStation()")
     public void givenNonExistentFirestation_whenGetFirestation_shouldReturnNull() {
         assertNull(firestationDAO.getFirestationByStation(1, ADDRESS));
+    }
+
+    @Test
+    @DisplayName("returns list of Firestations given station number //getFirestationsByStation()")
+    public void givenNonExistentFirestation_whenGetFirestation_shouldReturn() {
+        assertEquals(3, firestationDAO.getFirestationsByStation(STATION).size());
     }
 
     @Test

@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UrlServiceTest {
@@ -33,8 +35,8 @@ public class UrlServiceTest {
     }
 
     @Test
-    @DisplayName("returns a list of emails through given city //getEmailsByCity()")
-    public void givenPerson_whenCity_shouldReturnListOfEmails() {
-        assert(urlService.getEmailsByCity("Culver").contains("jaboyd@email.com"));
+    @DisplayName("returns null if the given address doesn't have any under age resident //getPersonsByFamily()")
+    public void givenNoUnderAgePerson_whenAddress_shouldReturnNull() {
+        assertNull(urlService.getPersonsByFamily("489 Manchester St"));
     }
 }
