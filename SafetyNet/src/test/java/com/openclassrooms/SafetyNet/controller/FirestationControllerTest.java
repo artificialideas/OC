@@ -74,7 +74,7 @@ public class FirestationControllerTest {
     }
     @Test
     @DisplayName("POST - returns null when missing data on create() //create()")
-    public void givenNewFirestation_whenMissingAddress_shouldReturnNull() throws Exception {
+    public void givenNewFirestation_whenMissingAddress_shouldReturnNull() {
         firestation = new Firestation();
         firestation.setStation(4);
 
@@ -92,12 +92,11 @@ public class FirestationControllerTest {
         firestation = new Firestation();
         firestation.setStation(2);
         firestation.setAddress("60 ThunderBolt St");
-        firestationService.update(STATION, ADDRESS, firestation);
 
         mockMvc.perform( put("/firestation/" + STATION + '/' + ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(firestation)))
-                .andExpect(jsonPath("$.station", is("2")))
+                .andExpect(jsonPath("$.station", is(2)))
                 .andExpect(jsonPath("$.address", is("60 ThunderBolt St")))
                 .andExpect(status().is2xxSuccessful());
     }

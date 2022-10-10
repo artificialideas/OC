@@ -29,10 +29,4 @@ public class FirestationService {
     public Boolean delete(int station, String address) {
         return firestationDAO.delete(station, address);
     }
-
-//    public List<String> getFirestationsByStation(int station) {
-//        firestationDAO.getFirestationsByStation(station);
-//        if (firestationDAO.getFirestationsByStation(station).size() > 0) {
-//        }
-//    }
 }
