@@ -89,19 +89,23 @@ class PersonDAOTest {
     @Test
     @DisplayName("returns the updated details of an existant Person resource //update()")
     public void givenExistantPerson_whenKnownFirstANDLastName_shouldReturnUpdatedPerson() {
-        // Existant mock resource
+        // Mock resource
         person = new Person();
         person.setFirstName("Jonanathan");
         person.setLastName("Marrack");
-        person.setAddress("29 15th St");
-        person.setCity("Culver");
-        person.setZip(97451);
-        person.setPhone("841-874-6513");
-        person.setEmail("drk@email.com");
+        person.setAddress("101 Eleven State St");
+        person.setCity("New York City");
+        person.setZip(10167);
+        person.setPhone("841-874-4440");
+        person.setEmail("jmarrack@email.com");
 
         // Updated data
         Person updatedPerson = new Person();
-        updatedPerson.setAddress("29 15th St");
+        updatedPerson.setAddress("101 Eleven State St");
+        updatedPerson.setCity("New York City");
+        updatedPerson.setZip(10167);
+        updatedPerson.setPhone("841-874-4440");
+        updatedPerson.setEmail("jmarrack@email.com");
 
         Person expected = person;
         Person actual = personDAO.update(FIRST_NAME, LAST_NAME, updatedPerson);
