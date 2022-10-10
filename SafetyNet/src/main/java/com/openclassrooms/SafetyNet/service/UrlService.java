@@ -306,6 +306,7 @@ public class UrlService {
                 .filter(firestation -> (Objects.equals(firestation.getStation(), station)))
                 .collect(Collectors.toList()));
     }
+
     Firestation getFirestationResourceByAddress(String address) {
         return (firestationDAO
                 .getFirestations()
